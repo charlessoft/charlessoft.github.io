@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://charlessoft.github.io/sitemap.xml 
