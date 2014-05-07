@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-08T02:01:34+08:00</updated>
+  <updated>2014-05-08T02:09:56+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[charlessoft]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -220,9 +220,8 @@ vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 
 <p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_3.png"></p>
 
-<p>打开web页面 <a href="http://localhost:8080">http://localhost:8080</a></p>
-
-<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_4.png"></p>
+<p>打开web页面 <a href="http://localhost:8080">http://localhost:8080</a>
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_4.png"></p>
 
 <p>修改utf8编码
 vi /etc/local/java/apache-tomcat-7.0.52/conf/server.xml</p>
@@ -277,11 +276,14 @@ java -jar jenkins.war</p>
 </span><span class='line'>将 id_rsa(相当于 privatekey)拷贝到 jenkins master 机器上,例如/root/.jenkins/id_rsa 下</span></code></pre></td></tr></table></div></figure>
 
 
-<p>4.1.4 在jenkins页面增加slave
-<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_6.png">
-增加证书<br/>
-<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_7.png">
-设置 publish over ssh<br/>
+<p>4.1.4 在jenkins页面增加slave</p>
+
+<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_6.png"></p>
+
+<p>增加证书<br/>
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_7.png"></p>
+
+<p>设置 publish over ssh<br/>
 <img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_8.png"></p>
 
 <h4>4.2. windows slave</h4>
@@ -289,8 +291,9 @@ java -jar jenkins.war</p>
 <p>4.2.1. 安装cygwin</p>
 
 <p>选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
-<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_9.png">
-等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_9.png"></p>
+
+<p>等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
 ]]></content>
   </entry>
   
