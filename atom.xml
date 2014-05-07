@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-08T01:11:29+08:00</updated>
+  <updated>2014-05-08T02:01:01+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -166,11 +166,11 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 去掉 passwd-db = passwd 的注释</p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_1.png" alt="image" /></p>
+<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_1.png"></p>
 
 <p>修改 passwd 文件,增加用户和密码</p>
 
-<p><img src="../images/jenkins_install//jenkins_install_pic_2.png" alt="image" /></p>
+<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_2.png"></p>
 
 <p>启动svn服务</p>
 
@@ -218,16 +218,16 @@ vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 </span><span class='line'>./startup.sh</span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_3.png" alt="image" /></p>
+<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_3.png"></p>
 
 <p>打开web页面 <a href="http://localhost:8080">http://localhost:8080</a></p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_4.png" alt="image" /></p>
+<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_4.png"></p>
 
 <p>修改utf8编码
 vi /etc/local/java/apache-tomcat-7.0.52/conf/server.xml</p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_5.png" alt="image" /></p>
+<p><img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_5.png"></p>
 
 <h4>3.6. 安装jenkins</h4>
 
@@ -278,37 +278,19 @@ java -jar jenkins.war</p>
 
 
 <p>4.1.4 在jenkins页面增加slave
-<img src="../images/jenkins_install/jenkins_install_pic_6.png" alt="image" />
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_6.png">
 增加证书<br/>
-<img src="../images/jenkins_install/jenkins_install_pic_7.png" alt="image" />
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_7.png">
 设置 publish over ssh<br/>
-<img src="../images/jenkins_install/jenkins_install_pic_8.png" alt="image" /></p>
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_8.png"></p>
 
 <h4>4.2. windows slave</h4>
 
 <p>4.2.1. 安装cygwin</p>
 
 <p>选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
-<img src="../images/jenkins_install/jenkins_install_pic_9.png" alt="image" />
+<img src="http://charlessoft.github.io/images/jenkins_install/jenkins_install_pic_9.png">
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jenkins]]></title>
-    <link href="http://charlessoft.github.io/blog/2014/05/07/jenkins/"/>
-    <updated>2014-05-07T11:56:33+08:00</updated>
-    <id>http://charlessoft.github.io/blog/2014/05/07/jenkins</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hello]]></title>
-    <link href="http://charlessoft.github.io/blog/2014/05/07/hello/"/>
-    <updated>2014-05-07T11:35:21+08:00</updated>
-    <id>http://charlessoft.github.io/blog/2014/05/07/hello</id>
-    <content type="html"><![CDATA[
 ]]></content>
   </entry>
   
