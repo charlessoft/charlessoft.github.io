@@ -4,7 +4,7 @@
   <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-09T17:40:17+08:00</updated>
+  <updated>2014-05-10T00:56:20+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -683,6 +683,8 @@ void Set_XXX( string strKey, void<em> value );<br/>
 每个类对象都需要定义JsonMethodMap来保存函数指针,对于少量的json字符串,还可以接受,如果json字符串比较多,并且包含多个json数组等,我们就需要声明多个类,并且每个类都需要处理JsonMethodMap,比较繁琐,而且容易出错.</p>
 
 <p>如何解决这个问题?可以使用一些宏定义,类似MFC中的定义一些列宏的思想来解决. 下文介绍</p>
+
+<p><a href="http://url.cn/KmkwHO">json2obj demo</a></p>
 ]]></content>
   </entry>
   
@@ -725,11 +727,14 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;mkdir /usr/local/java
-</span><span class='line'>&gt;mv ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin /usr/local/java
-</span><span class='line'>&gt;cd /usr/local/java
-</span><span class='line'>&gt;chmod 755 ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin
-</span><span class='line'>./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>mkdir /usr/local/java
+</span><span class='line'>mv ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin /usr/local/java
+</span><span class='line'>cd /usr/local/java
+</span><span class='line'>chmod 755 ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin
+</span><span class='line'>./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>设置环境变量 vi /etc/profile</p>
@@ -738,16 +743,20 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;export JAVA_HOME=/usr/local/java/jdk1.6.0_38
-</span><span class='line'>&gt;export JAVA_BIN=/usr/local/java/jdk1.6.0_38/bin
-</span><span class='line'>&gt;export PATH=$PATH:$JAVA_HOME/bin
-</span><span class='line'>&gt;export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar export JAVA_HOME JAVA_BIN PATH CLASSPATH</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>export JAVA_HOME=/usr/local/java/jdk1.6.0_38
+</span><span class='line'>export JAVA_BIN=/usr/local/java/jdk1.6.0_38/bin
+</span><span class='line'>export PATH=$PATH:$JAVA_HOME/bin
+</span><span class='line'>export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar export JAVA_HOME JAVA_BIN PATH CLASSPATH
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>使 /etc/profile立即生效</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;source /etc/profile</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source /etc/profile
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h4>3.2. 安装 apache</h4>
@@ -761,11 +770,14 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;tar zxvf apr-1.3.6.tar.gz
-</span><span class='line'>&gt;cd apr-1.3.6
-</span><span class='line'>&gt;./configure
-</span><span class='line'>&gt;make
-</span><span class='line'>&gt;make install</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>tar zxvf apr-1.3.6.tar.gz
+</span><span class='line'>cd apr-1.3.6
+</span><span class='line'>./configure
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>3.2.1. 安装apr-util<br/>
@@ -776,11 +788,14 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;tar zxvf apr-util-1.3.8.tar.gz
-</span><span class='line'>&gt;cd apr-util-1.3.8
-</span><span class='line'>&gt;./configure --with-apr=/usr/local/apr
-</span><span class='line'>&gt;make
-</span><span class='line'>&gt;make install</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>tar zxvf apr-util-1.3.8.tar.gz
+</span><span class='line'>cd apr-util-1.3.8
+</span><span class='line'>./configure --with-apr=/usr/local/apr
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>3.2.3. 安装apache<br/>
@@ -792,12 +807,15 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;tar zxvf httpd-2.2.9.tar.gz
-</span><span class='line'>&gt;cd http-2.2.9
-</span><span class='line'>&gt;./configure --prefix=/usr/local/apache2.2.9 --enable-dav --enable-so --enable-maintainer-mode --with-apr=/usr/local/apr/bin/apr-1-config --with-apr-util=/usr/local/apr/bin/apu-1-config
-</span><span class='line'>&gt;make
-</span><span class='line'>&gt;make install
-</span><span class='line'>&gt;ln -s apache2.2.9 apache</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>tar zxvf httpd-2.2.9.tar.gz
+</span><span class='line'>cd http-2.2.9
+</span><span class='line'>./configure --prefix=/usr/local/apache2.2.9 --enable-dav --enable-so --enable-maintainer-mode --with-apr=/usr/local/apr/bin/apr-1-config --with-apr-util=/usr/local/apr/bin/apu-1-config
+</span><span class='line'>make
+</span><span class='line'>make install
+</span><span class='line'>ln -s apache2.2.9 apache
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h4>3.3. 安装subversion</h4>
@@ -812,27 +830,32 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;apt-get install zlib1g-dev
-</span><span class='line'>&gt;tar zxvf subversin-1.8.5.tar.gz
-</span><span class='line'>&gt;unzip sqlite-amalgamation.zip -d subversion-1.8.5
-</span><span class='line'>&gt;cd subversion-1.8.5
-</span><span class='line'>&gt;mv sqlite-amalgmation-3071501 sqlite-amalgamation
-</span><span class='line'>&gt;./configure --prefix=/opt/svn --with-apxs=/usr/local/apache2.2.9/bin/apxs --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr
-</span><span class='line'>&gt;make
-</span><span class='line'>&gt;make install</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>apt-get install zlib1g-dev
+</span><span class='line'>tar zxvf subversin-1.8.5.tar.gz
+</span><span class='line'>unzip sqlite-amalgamation.zip -d subversion-1.8.5
+</span><span class='line'>cd subversion-1.8.5
+</span><span class='line'>mv sqlite-amalgmation-3071501 sqlite-amalgamation
+</span><span class='line'>./configure --prefix=/opt/svn --with-apxs=/usr/local/apache2.2.9/bin/apxs --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>配置svn<br/>
 建立svn版本库目录</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;mkdir -p /home/charles/svndata/repos</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p /home/charles/svndata/repos
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>建立svn版本库</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;svnadmin create /home/charles/svndata/repos</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin create /home/charles/svndata/repos
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>修改配置文件
