@@ -11,6 +11,7 @@ categories: 持续集成
 ##概述
 
 
+<!--more-->
 ##安装手册
 
 ###1. 环境
@@ -244,3 +245,5 @@ chmod 700 authorized_keys
 选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
 {% img /../images/jenkins_install/jenkins_install_pic_9.png %}  
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中
+
+

@@ -7,9 +7,10 @@ categories: c++
 ---
 
 ##概述
-c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.
+c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.本文介绍如何把json字符串转成C++类对象
 
 
+<!--more-->
 ##相关库
 ###1. jsoncpp
 用于解析、遍历json库
@@ -384,5 +385,6 @@ int main()
 如何解决这个问题?可以使用一些宏定义,类似MFC中的定义一些列宏的思想来解决. 下文介绍
 
 [json2obj demo](http://url.cn/KmkwHO)
+
 
 
