@@ -53,13 +53,6 @@
   
 </ul>
   
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:charlessoft.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
@@ -244,11 +237,11 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 去掉 passwd-db = passwd 的注释</p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_1.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_1.png"></p>
 
 <p>修改 passwd 文件,增加用户和密码</p>
 
-<p><img src="../images/jenkins_install//jenkins_install_pic_2.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_2.png"></p>
 
 <p>启动svn服务</p>
 
@@ -296,16 +289,16 @@ vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 </span><span class='line'>./startup.sh</span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_3.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_3.png"></p>
 
 <p>打开web页面 <a href="http://localhost:8080">http://localhost:8080</a></p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_4.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_4.png"></p>
 
 <p>修改utf8编码
 vi /etc/local/java/apache-tomcat-7.0.52/conf/server.xml</p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_5.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_5.png"></p>
 
 <h4>3.6. 安装jenkins</h4>
 
@@ -356,18 +349,18 @@ java -jar jenkins.war</p>
 
 
 <p>4.1.4 在jenkins页面增加slave
-<img src="../images/jenkins_install/jenkins_install_pic_6.png" alt="image" />
+<img src="/../images/jenkins_install/jenkins_install_pic_6.png"><br/>
 增加证书<br/>
-<img src="../images/jenkins_install/jenkins_install_pic_7.png" alt="image" />
+<img src="/../images/jenkins_install/jenkins_install_pic_7.png"><br/>
 设置 publish over ssh<br/>
-<img src="../images/jenkins_install/jenkins_install_pic_8.png" alt="image" /></p>
+<img src="/../images/jenkins_install/jenkins_install_pic_8.png"></p>
 
 <h4>4.2. windows slave</h4>
 
 <p>4.2.1. 安装cygwin</p>
 
 <p>选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
-<img src="../images/jenkins_install/jenkins_install_pic_9.png" alt="image" />
+<img src="/../images/jenkins_install/jenkins_install_pic_9.png"><br/>
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
 </div>
 
@@ -407,7 +400,7 @@ java -jar jenkins.war</p>
     <p class="meta">
       
       
-        <a class="basic-alignment right" href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/" title="Next Post: Json转换类对象C++">Json转换类对象C++ &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/" title="Next Post: 把json字符串转换成C++类对象(一)">把json字符串转换成C++类对象(一) &raquo;</a>
       
     </p>
   </footer>
@@ -417,25 +410,7 @@ java -jar jenkins.war</p>
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">Json转换类对象C++</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/07/jenkins-install/">Jenkins_install</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 

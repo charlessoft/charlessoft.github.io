@@ -9,8 +9,9 @@
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="概述 c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象. 相关库 1. jsoncpp 用于解析、遍历json库 原理 1. 遍历json 2. 函数指针赋值 根据json字符串,定义对应类,例如: 1
+2
+3 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -49,13 +50,6 @@
   
 </ul>
   
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:charlessoft.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
@@ -72,7 +66,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">Json转换类对象C++</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a></h1>
     
     
       <p class="meta">
@@ -95,7 +89,671 @@
   </header>
 
 
-  <div class="entry-content">
+  <div class="entry-content"><h2>概述</h2>
+
+<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.</p>
+
+<h2>相关库</h2>
+
+<h3>1. jsoncpp</h3>
+
+<p>用于解析、遍历json库</p>
+
+<h2>原理</h2>
+
+<h3>1. 遍历json</h3>
+
+<h3>2. 函数指针赋值</h3>
+
+<p>根据json字符串,定义对应类,例如:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>    "students": [
+</span><span class='line'>        {
+</span><span class='line'>            "name": "zhangsan",
+</span><span class='line'>            "age": 20,
+</span><span class='line'>            "sex": "男"
+</span><span class='line'>        },
+</span><span class='line'>        {
+</span><span class='line'>            "name": "lisi",
+</span><span class='line'>            "age": 21,
+</span><span class='line'>            "sex": "女"
+</span><span class='line'>        }
+</span><span class='line'>    ]
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>从以上json格式看,<code>students</code>节点包含2个数组,每个数组中都有一个<code>name</code>和<code>age</code>, 我们可以定义2个类, <code>CStudents</code>和<code>CStudentItem</code>类,
+<code>CStudents</code>包含<code>CStudentItem</code>成员对象, <code>CStudentItem</code>包含<code>name</code>、<code>age</code>和<code>sex</code>成员函数</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class CStudentItem
+</span><span class='line'>{
+</span><span class='line'>private:
+</span><span class='line'>    CStudentItem(){}
+</span><span class='line'>
+</span><span class='line'>    virtual ~CStudentItem(){}
+</span><span class='line'>
+</span><span class='line'>    string m_name;
+</span><span class='line'>
+</span><span class='line'>    int_ptr_t m_age;
+</span><span class='line'>
+</span><span class='line'>    string sex;
+</span><span class='line'>    
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>class CStudents
+</span><span class='line'>{
+</span><span class='line'>private:
+</span><span class='line'>    vector&lt;CStudentItem*&gt; m_StudentItemArr;
+</span><span class='line'>};
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下一步 我们需要解析Json,把json中对象的值设置到以上对应的类对象中,我们就面临2个问题,<br/>
+1. 怎么遍历?可以从jsoncpp的demo中找到答案-见下面代码<br/>
+2. 遍历完怎么设置到对应对象中?使用函数指针.</p>
+
+<h4>遍历json</h4>
+
+<p>建立一个IParseJson类,用于解析遍历Json<br/>
+IParseJson.h</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>class IParseJson  
+</span><span class='line'>{  
+</span><span class='line'>
+</span><span class='line'>public:
+</span><span class='line'>  
+</span><span class='line'>  IParseJson() {}   
+</span><span class='line'>
+</span><span class='line'>  virtual ~IParseJson() {}
+</span><span class='line'>
+</span><span class='line'>  virtual BOOL ParseJson( const char* json );
+</span><span class='line'>
+</span><span class='line'>protected:
+</span><span class='line'>
+</span><span class='line'>  virtual void DealJsonNode( string strNode, string value ){}
+</span><span class='line'>
+</span><span class='line'>  virtual void DealJsonNode( string strNode, int value ){}
+</span><span class='line'>
+</span><span class='line'>  virtual void DealJsonNode( string strNode, unsigned int value ){}
+</span><span class='line'>
+</span><span class='line'>  virtual void DealJsonNode( string strNode, double value ){}
+</span><span class='line'>
+</span><span class='line'>  virtual IParseJson* CreateJsonItem( string strKey );
+</span><span class='line'>
+</span><span class='line'>private:
+</span><span class='line'>  virtual void PrintValueTree( Json::Value &value, IParseJson* pParent, IParseJson* pCurObj, const std::string strkey );
+</span><span class='line'>
+</span><span class='line'>};
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>PrintValueTree</code> 遍历json,在遍历中处理各自结点信息<br/>
+<code>DealJsonNode</code> 在函数中,参数strNode是传递进来的结点名字,查找map对应的函数指针,进行赋值<br/>
+<code>CreateJsonItem</code> 在函数中,参数strKey针对传递进来的结点名字,进行判断处理是否生成员变量对象.</p>
+
+<p>IParseJson.cpp</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>
+</span><span class='line'>#include &lt;algorithm&gt; // sort
+</span><span class='line'>#include &lt;stdio.h&gt;
+</span><span class='line'>#include &lt;stddef.h&gt;
+</span><span class='line'>#include &lt;sstream&gt;
+</span><span class='line'>IParseJson* IParseJson::CreateJsonItem( string strKey )
+</span><span class='line'>{
+</span><span class='line'>    return this;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>void IParseJson::PrintValueTree( Json::Value &value, IParseJson* pParent, IParseJson* pobj, const std::string strkey )
+</span><span class='line'>{
+</span><span class='line'>    IParseJson* pTmpJsonNode = NULL;
+</span><span class='line'>    switch ( value.type() )
+</span><span class='line'>    {
+</span><span class='line'>        case Json::nullValue:
+</span><span class='line'>            {
+</span><span class='line'>                break;
+</span><span class='line'>            }
+</span><span class='line'>        case Json::intValue:
+</span><span class='line'>            pobj-&gt;DealJsonNode( strkey, value.asInt() );
+</span><span class='line'>            break;
+</span><span class='line'>        case Json::uintValue:
+</span><span class='line'>            pobj-&gt;DealJsonNode( strkey, value.asUInt() );
+</span><span class='line'>            break;
+</span><span class='line'>        case Json::realValue:
+</span><span class='line'>            pobj-&gt;DealJsonNode( strkey, value.asDouble() );
+</span><span class='line'>            break;
+</span><span class='line'>        case Json::stringValue:
+</span><span class='line'>            pobj-&gt;DealJsonNode( strkey, value.asString() );
+</span><span class='line'>            break;
+</span><span class='line'>        case Json::booleanValue:
+</span><span class='line'>            pobj-&gt;DealJsonNode( strkey, value.asBool() );
+</span><span class='line'>            break;
+</span><span class='line'>        case Json::arrayValue:
+</span><span class='line'>            {
+</span><span class='line'>                int size = value.size();
+</span><span class='line'>
+</span><span class='line'>                for ( int index =0; index &lt; size; ++index )
+</span><span class='line'>                {
+</span><span class='line'>                    pTmpJsonNode = pParent-&gt;CreateJsonItem( strkey );
+</span><span class='line'>                    PrintValueTree( value[index], pParent, pTmpJsonNode, strkey );
+</span><span class='line'>                }
+</span><span class='line'>
+</span><span class='line'>            }
+</span><span class='line'>            break;
+</span><span class='line'>        case Json::objectValue:
+</span><span class='line'>            {
+</span><span class='line'>                Json::Value::Members members( value.getMemberNames() );
+</span><span class='line'>                std::sort( members.begin(), members.end() );
+</span><span class='line'>                std::string suffix = "";
+</span><span class='line'>                for ( Json::Value::Members::iterator it = members.begin();
+</span><span class='line'>                        it != members.end();
+</span><span class='line'>                        ++it )
+</span><span class='line'>                {
+</span><span class='line'>                    const std::string &name = *it;
+</span><span class='line'>
+</span><span class='line'>                    PrintValueTree( value[name], pobj, pobj, name );
+</span><span class='line'>
+</span><span class='line'>                }
+</span><span class='line'>            }
+</span><span class='line'>            break;
+</span><span class='line'>        default:
+</span><span class='line'>            break;
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>BOOL IParseJson::ParseJson( const char* json )
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    Json::Features features;
+</span><span class='line'>    Json::Reader reader( features );
+</span><span class='line'>    Json::Value root;
+</span><span class='line'>    bool parsingSuccessful = reader.parse( json, root );
+</span><span class='line'>    if ( !parsingSuccessful )
+</span><span class='line'>    {
+</span><span class='line'>        return FALSE;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    PrintValueTree( root, this, this , "" );
+</span><span class='line'>    return TRUE;
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>函数指针</h4>
+
+<p>事先定义好函数,在各自函数中赋值对象值,用来遍历json时候,调用该函数,进行赋值<br/>
+void Set_XXX( string strKey, void<em> value );<br/>
+其中XXX为自定义的函数名称,取一个和json对象对应的名字, 例如: void Set_Name( string strKey, void</em> value );
+代码修改成如下格式:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>class CStudentItem
+</span><span class='line'>{
+</span><span class='line'>private:
+</span><span class='line'>    string m_name;
+</span><span class='line'>    
+</span><span class='line'>    int m_age;
+</span><span class='line'>    
+</span><span class='line'>    string sex;
+</span><span class='line'>   
+</span><span class='line'>    //设置函数指针
+</span><span class='line'>    CStudentItem()
+</span><span class='line'>    {
+</span><span class='line'>        //设置结点对应的函数指针
+</span><span class='line'>        m_jsonMethonMap["name"] = &CStudentItem::Set_Name;
+</span><span class='line'>        m_jsonMethonMap["age"] = &CStudentItem::Set_Age;
+</span><span class='line'>        m_jsonMethonMap["sex"] = &CStudentItem::Set_Sex;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    virtual ~CStudentItem(){}
+</span><span class='line'>
+</span><span class='line'>    typedef void ( CStudentItem::*StudentItemFunc )( string key, void* value );
+</span><span class='line'>
+</span><span class='line'>    typedef map&lt;string, StudentItemFunc&gt;JsonMethodMap;
+</span><span class='line'>
+</span><span class='line'>    JsonMethodMap m_jsonMethonMap;
+</span><span class='line'>
+</span><span class='line'>    void Set_Name( string strKey, void* value )
+</span><span class='line'>    {
+</span><span class='line'>        this-&gt;m_name = (char*)value;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void Set_Age( string strKey, void* value )
+</span><span class='line'>    {
+</span><span class='line'>        this-&gt;m_age = atoi((char*)value));
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void Set_Sex( string strKey, void* value )
+</span><span class='line'>    {
+</span><span class='line'>        this-&gt;m_sex = (char*)value;
+</span><span class='line'>    }
+</span><span class='line'>    //设置函数指针
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class CStudents
+</span><span class='line'>{
+</span><span class='line'>private:
+</span><span class='line'>    vector&lt;CStudentItem*&gt; m_StudentItemArr;
+</span><span class='line'>};
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>现在实现了遍历Json,定义好函数指针后,怎么赋值?<br/>
+我们让所有类都继承IParseJson, 实现DealJsonNode 函数,就可以实现对个类对象进行赋值<br/>
+修改后的代码:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>class CStudentItem : public IParseJson
+</span><span class='line'>{
+</span><span class='line'>    public:
+</span><span class='line'>        string m_name;
+</span><span class='line'>
+</span><span class='line'>        int m_age;
+</span><span class='line'>
+</span><span class='line'>        string m_sex;
+</span><span class='line'>        //设置函数指针
+</span><span class='line'>        CStudentItem()
+</span><span class='line'>        {
+</span><span class='line'>            //设置结点对应的函数指针
+</span><span class='line'>            m_jsonMethodMap["name"] = &CStudentItem::Set_Name;
+</span><span class='line'>            m_jsonMethodMap["age"] = &CStudentItem::Set_Age;
+</span><span class='line'>            m_jsonMethodMap["sex"] = &CStudentItem::Set_Sex;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        virtual ~CStudentItem(){}
+</span><span class='line'>
+</span><span class='line'>        typedef void ( CStudentItem::*StudentItemFunc )( string key, void* value );
+</span><span class='line'>
+</span><span class='line'>        typedef map&lt;string, StudentItemFunc&gt;JsonMethodMap;
+</span><span class='line'>
+</span><span class='line'>        JsonMethodMap m_jsonMethodMap;
+</span><span class='line'>
+</span><span class='line'>        void Set_Name( string strKey, void* value )
+</span><span class='line'>        {
+</span><span class='line'>            this-&gt;m_name = (char*)value;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        void Set_Age( string strKey, void* value )
+</span><span class='line'>        {
+</span><span class='line'>            this-&gt;m_age = (intptr_t)value;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        void Set_Sex( string strKey, void* value )
+</span><span class='line'>        {
+</span><span class='line'>            this-&gt;m_sex = (char*)value;
+</span><span class='line'>        }
+</span><span class='line'>        //设置函数指针
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        //在map中找到对应的函数指针,对成员变量进行赋值
+</span><span class='line'>        virtual void DealJsonNode( string strNode, string value )
+</span><span class='line'>        {
+</span><span class='line'>            JsonMethodMap::iterator Iter = m_jsonMethodMap.find( strNode );
+</span><span class='line'>            if ( Iter != m_jsonMethodMap.end() )
+</span><span class='line'>            {
+</span><span class='line'>                (this-&gt;*m_jsonMethodMap[strNode])( strNode,  (void*)value.c_str() );
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        virtual void DealJsonNode( string strNode, int value )
+</span><span class='line'>        {
+</span><span class='line'>            JsonMethodMap::iterator Iter = m_jsonMethodMap.find( strNode );
+</span><span class='line'>            if ( Iter != m_jsonMethodMap.end() )
+</span><span class='line'>            {
+</span><span class='line'>                (this-&gt;*m_jsonMethodMap[strNode])( strNode,  (void*)value );
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>        //在map中找到对应的函数指针,对成员变量进行赋值
+</span><span class='line'>
+</span><span class='line'>        virtual IParseJson* CreateJsonItem( string strKey )
+</span><span class='line'>        {
+</span><span class='line'>            return this; //该类中没有一些数组,直接返回自身就好
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>};
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>调用</p>
+
+<p>main.cpp</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
+</span><span class='line'>#include &lt;stdlib.h&gt;
+</span><span class='line'>#include &lt;string&gt;
+</span><span class='line'>using namespace std;
+</span><span class='line'>
+</span><span class='line'>#pragma comment(lib,"./jsoncpp/dbg/lib_json/json_vc10_libmtd.lib")
+</span><span class='line'>
+</span><span class='line'>int main()
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>  string strJson = "{ \"students\": [ { \"name\": \"zhangsan\", \"age\": 20, \"sex\": \"男\" }, { \"name\": \"lisi\", \"age\": 21, \"sex\": \"女\" } ] }";
+</span><span class='line'>  CStudents* pStudents = new CStudents;
+</span><span class='line'>  pStudents-&gt;ParseJson( strJson.c_str() );
+</span><span class='line'>  for( int i=0;i&lt;pStudents-&gt;m_StudentItemArr.size(); i++ )
+</span><span class='line'>  {
+</span><span class='line'>      CStudentItem* pStudentItem = pStudents-&gt;m_StudentItemArr.at(i);
+</span><span class='line'>      printf("name:%s\r\nage:%d\r\nsex:%s\r\n-----\r\n",pStudentItem-&gt;m_name.c_str(),
+</span><span class='line'>          pStudentItem-&gt;m_age,pStudentItem-&gt;m_sex.c_str() );
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果:</p>
+
+<p><img src="/../images/json_to_obj/1.png"></p>
+
+<p>小结:</p>
+
+<p>只要声明好各个类成员变量并设置好对应的函数,就可以把json字符串转换成对应的类对象,
+每个类对象都需要定义JsonMethodMap来保存函数指针,对于少量的json字符串,还可以接受,如果json字符串比较多,并且包含多个json数组等,我们就需要声明多个类,并且每个类都需要处理JsonMethodMap,比较繁琐,而且容易出错.</p>
+
+<p>如何解决这个问题?可以使用一些宏定义,类似MFC中的定义一些列宏的思想来解决. 下文介绍</p>
 </div>
   
   
@@ -279,11 +937,11 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)<br/>
 vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 去掉 passwd-db = passwd 的注释</p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_1.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_1.png"></p>
 
 <p>修改 passwd 文件,增加用户和密码</p>
 
-<p><img src="../images/jenkins_install//jenkins_install_pic_2.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_2.png"></p>
 
 <p>启动svn服务</p>
 
@@ -331,16 +989,16 @@ vi /home/charles/svndata/repos/conf/svnserve.conf<br/>
 </span><span class='line'>./startup.sh</span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_3.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_3.png"></p>
 
 <p>打开web页面 <a href="http://localhost:8080">http://localhost:8080</a></p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_4.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_4.png"></p>
 
 <p>修改utf8编码
 vi /etc/local/java/apache-tomcat-7.0.52/conf/server.xml</p>
 
-<p><img src="../images/jenkins_install/jenkins_install_pic_5.png" alt="image" /></p>
+<p><img src="/../images/jenkins_install/jenkins_install_pic_5.png"></p>
 
 <h4>3.6. 安装jenkins</h4>
 
@@ -391,18 +1049,18 @@ java -jar jenkins.war</p>
 
 
 <p>4.1.4 在jenkins页面增加slave
-<img src="../images/jenkins_install/jenkins_install_pic_6.png" alt="image" />
+<img src="/../images/jenkins_install/jenkins_install_pic_6.png"><br/>
 增加证书<br/>
-<img src="../images/jenkins_install/jenkins_install_pic_7.png" alt="image" />
+<img src="/../images/jenkins_install/jenkins_install_pic_7.png"><br/>
 设置 publish over ssh<br/>
-<img src="../images/jenkins_install/jenkins_install_pic_8.png" alt="image" /></p>
+<img src="/../images/jenkins_install/jenkins_install_pic_8.png"></p>
 
 <h4>4.2. windows slave</h4>
 
 <p>4.2.1. 安装cygwin</p>
 
 <p>选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
-<img src="../images/jenkins_install/jenkins_install_pic_9.png" alt="image" />
+<img src="/../images/jenkins_install/jenkins_install_pic_9.png"><br/>
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
 </div>
   
@@ -419,25 +1077,7 @@ java -jar jenkins.war</p>
 </div>
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">Json转换类对象C++</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/07/jenkins-install/">Jenkins_install</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
   
 </aside>
 
