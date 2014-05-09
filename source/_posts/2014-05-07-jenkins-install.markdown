@@ -33,25 +33,30 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)
 进入到jdk存放目录
 
 ```
->mkdir /usr/local/java
->mv ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin /usr/local/java
->cd /usr/local/java
->chmod 755 ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin
+
+mkdir /usr/local/java
+mv ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin /usr/local/java
+cd /usr/local/java
+chmod 755 ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin
 ./jdk-6u38-ea-bin-b04-linux-i586-31_oct_2012.bin
+
 ```
 
 设置环境变量 vi /etc/profile
 
 ```
->export JAVA_HOME=/usr/local/java/jdk1.6.0_38
->export JAVA_BIN=/usr/local/java/jdk1.6.0_38/bin
->export PATH=$PATH:$JAVA_HOME/bin
->export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar export JAVA_HOME JAVA_BIN PATH CLASSPATH
+
+export JAVA_HOME=/usr/local/java/jdk1.6.0_38
+export JAVA_BIN=/usr/local/java/jdk1.6.0_38/bin
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar export JAVA_HOME JAVA_BIN PATH CLASSPATH
+
 ```
 使 /etc/profile立即生效
 
 ```
->source /etc/profile
+source /etc/profile
+
 ```
 
 ####3.2. 安装 apache
@@ -60,60 +65,70 @@ jdk-6u38-ea-bin-b04-linux-amd64-31_oct_2012.bin(x64)
 https://archive.apache.org/dist/apr/apr-1.3.6.tar.gz  
 
 ```
->tar zxvf apr-1.3.6.tar.gz
->cd apr-1.3.6
->./configure
->make
->make install
+
+tar zxvf apr-1.3.6.tar.gz
+cd apr-1.3.6
+./configure
+make
+make install
+
 ```
 
 3.2.1. 安装apr-util  
 下载地址:https://archive.apache.org/dist/apr/apr-util-1.3.8.tar.gz  
 
 ```
->tar zxvf apr-util-1.3.8.tar.gz
->cd apr-util-1.3.8
->./configure --with-apr=/usr/local/apr
->make
->make install
+
+tar zxvf apr-util-1.3.8.tar.gz
+cd apr-util-1.3.8
+./configure --with-apr=/usr/local/apr
+make
+make install
+
 ```
 3.2.3. 安装apache  
 下载地址:http://pkgs.fedoraproject.org/repo/pkgs/httpd/httpd-2.2.9.tar.gz/80d3754fc278338 033296f0d41ef2c04/httpd-2.2.9.tar.gz
 
 ```
->tar zxvf httpd-2.2.9.tar.gz
->cd http-2.2.9
->./configure --prefix=/usr/local/apache2.2.9 --enable-dav --enable-so --enable-maintainer-mode --with-apr=/usr/local/apr/bin/apr-1-config --with-apr-util=/usr/local/apr/bin/apu-1-config
->make
->make install
->ln -s apache2.2.9 apache
+
+tar zxvf httpd-2.2.9.tar.gz
+cd http-2.2.9
+./configure --prefix=/usr/local/apache2.2.9 --enable-dav --enable-so --enable-maintainer-mode --with-apr=/usr/local/apr/bin/apr-1-config --with-apr-util=/usr/local/apr/bin/apu-1-config
+make
+make install
+ln -s apache2.2.9 apache
+
 ```
 ####3.3. 安装subversion
 
 下载地址:https://archive.apache.org/dist/subversion/subversion-1.8.5.tar.gz
 
 ```
->apt-get install zlib1g-dev
->tar zxvf subversin-1.8.5.tar.gz
->unzip sqlite-amalgamation.zip -d subversion-1.8.5
->cd subversion-1.8.5
->mv sqlite-amalgmation-3071501 sqlite-amalgamation
->./configure --prefix=/opt/svn --with-apxs=/usr/local/apache2.2.9/bin/apxs --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr
->make
->make install
+
+apt-get install zlib1g-dev
+tar zxvf subversin-1.8.5.tar.gz
+unzip sqlite-amalgamation.zip -d subversion-1.8.5
+cd subversion-1.8.5
+mv sqlite-amalgmation-3071501 sqlite-amalgamation
+./configure --prefix=/opt/svn --with-apxs=/usr/local/apache2.2.9/bin/apxs --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr
+make
+make install
+
 ```
 
 配置svn  
 建立svn版本库目录
 
 ```
->mkdir -p /home/charles/svndata/repos
+mkdir -p /home/charles/svndata/repos
+
 ```
 
 建立svn版本库
 
 ```
->svnadmin create /home/charles/svndata/repos
+svnadmin create /home/charles/svndata/repos
+
 ```
 
 修改配置文件

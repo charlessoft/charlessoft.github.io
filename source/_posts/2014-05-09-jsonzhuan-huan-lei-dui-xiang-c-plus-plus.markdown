@@ -383,6 +383,6 @@ int main()
 
 如何解决这个问题?可以使用一些宏定义,类似MFC中的定义一些列宏的思想来解决. 下文介绍
 
-
+[json2obj demo](http://url.cn/KmkwHO)
 
 
