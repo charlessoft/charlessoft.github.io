@@ -4,7 +4,7 @@
   <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-10T00:56:20+08:00</updated>
+  <updated>2014-05-10T02:08:41+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -14,13 +14,243 @@
 
   
   <entry>
+    <title type="html"><![CDATA[把json字符串转换成C++类对象(二)]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/05/10/json2c-plus-plus2/"/>
+    <updated>2014-05-10T01:25:15+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/05/10/json2c-plus-plus2</id>
+    <content type="html"><![CDATA[<h2>概述</h2>
+
+<p>上一篇文章中讲述了在C++中如何把json字符串转换成c++类对象,<a href="http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a>其中使用到了开源库(jsoncpp),函数指针,事先需要声明每个类相关代码,遍历完毕json字符串就得到对应类对象</p>
+
+<!--more-->
+
+
+<p>事先声明的代码</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>typedef void ( CStudentItem::*StudentItemFunc )( string key, void* value );
+</span><span class='line'>
+</span><span class='line'>typedef map&lt;string, StudentItemFunc&gt;JsonMethodMap;
+</span><span class='line'>
+</span><span class='line'>JsonMethodMap m_jsonMethodMap;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>void Set_XXX( string strKey, void* value );
+</span><span class='line'>
+</span><span class='line'>virtual void DealJsonNode( string strNode, string value );
+</span><span class='line'>
+</span><span class='line'>virtual void DealJsonNode( string strNode, int value );
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当json字符串很多的时候.就造成每次都要声明重复的代码,过程很繁琐,而且容易写错,如何解决这个问题,或者可以相对简便些?</p>
+
+<p>我想到了用宏定义来声明函数类似MFC中插入DECLARE_DYNAMIC等宏的方式,</p>
+
+<p>我们把重复的代码提取出来,变成宏定义,插入到类声明中</p>
+
+<p>宏定义</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#define JSON_TYPE_STRING 1
+</span><span class='line'>#define JSON_TYPE_INT 2
+</span><span class='line'>#define JSON_TYPE_DOUBLE 3
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>#define JSON_DEFINE_METHODMAP( theclass ) \
+</span><span class='line'>    typedef void ( theclass::*theclass##Func )( string strNode, void* value ); \
+</span><span class='line'>        typedef map&lt;string, theclass##Func&gt;JsonMethodMap; \
+</span><span class='line'>            JsonMethodMap m_jsonmapfunc;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>#define JSON_DEAL_NODE_STRING() \
+</span><span class='line'>    virtual void DealJsonNode( string strNode, string value ){ \
+</span><span class='line'>        JsonMethodMap::iterator Iter = m_jsonmapfunc.find( strNode ); \
+</span><span class='line'>        if ( Iter != m_jsonmapfunc.end() ) \
+</span><span class='line'>        { \
+</span><span class='line'>            (this-&gt;*m_jsonmapfunc[strNode])( strNode,  (void*)value.c_str() ); \
+</span><span class='line'>        } \
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>#define JSON_DEAL_NODE_INT() \
+</span><span class='line'>    virtual void DealJsonNode( string strNode, int value ){ \
+</span><span class='line'>        JsonMethodMap::iterator Iter = m_jsonmapfunc.find( strNode ); \
+</span><span class='line'>        if ( Iter != m_jsonmapfunc.end() ) \
+</span><span class='line'>        { \
+</span><span class='line'>            (this-&gt;*m_jsonmapfunc[strNode])( strNode,  (void*)value ); \
+</span><span class='line'>        } \
+</span><span class='line'>    }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改后的代码</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>class CStudentItem : public IParseJson
+</span><span class='line'>{
+</span><span class='line'>    public:
+</span><span class='line'>        string m_name;
+</span><span class='line'>
+</span><span class='line'>        int m_age;
+</span><span class='line'>
+</span><span class='line'>        string m_sex;
+</span><span class='line'>        //设置函数指针
+</span><span class='line'>        CStudentItem()
+</span><span class='line'>        {
+</span><span class='line'>            //设置结点对应的函数指针
+</span><span class='line'>            m_jsonMethodMap["name"] = &CStudentItem::Set_Name;
+</span><span class='line'>            m_jsonMethodMap["age"] = &CStudentItem::Set_Age;
+</span><span class='line'>            m_jsonMethodMap["sex"] = &CStudentItem::Set_Sex;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        virtual ~CStudentItem(){}
+</span><span class='line'>
+</span><span class='line'>        //定义 JsonMethodMap
+</span><span class='line'>        DECLARE_DYNAMIC( CStudentItem )
+</span><span class='line'>
+</span><span class='line'>        JSON_TYPE_STRING()
+</span><span class='line'>
+</span><span class='line'>        JSON_TYPE_INT()
+</span><span class='line'>        //定义 JsonMethodMap
+</span><span class='line'>
+</span><span class='line'>        void Set_Name( string strKey, void* value )
+</span><span class='line'>        {
+</span><span class='line'>            this-&gt;m_name = (char*)value;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        void Set_Age( string strKey, void* value )
+</span><span class='line'>        {
+</span><span class='line'>            this-&gt;m_age = (intptr_t)value;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        void Set_Sex( string strKey, void* value )
+</span><span class='line'>        {
+</span><span class='line'>            this-&gt;m_sex = (char*)value;
+</span><span class='line'>        }
+</span><span class='line'>        //设置函数指针
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        //在map中找到对应的函数指针,对成员变量进行赋值
+</span><span class='line'>
+</span><span class='line'>        virtual IParseJson* CreateJsonItem( string strKey )
+</span><span class='line'>        {
+</span><span class='line'>            return this; //该类中没有一些数组,直接返回自身就好
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>};
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>剩下的每个类就只需要定义Set_XXX进行设置就好了. 后期看看怎么把Set_XXX函数进行优化.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[把json字符串转换成C++类对象(一)]]></title>
     <link href="http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/"/>
     <updated>2014-05-09T13:49:11+08:00</updated>
     <id>http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus</id>
     <content type="html"><![CDATA[<h2>概述</h2>
 
-<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.</p>
+<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.本文介绍如何把json字符串转成C++类对象</p>
+
+<!--more-->
+
 
 <h2>相关库</h2>
 
@@ -696,6 +926,9 @@ void Set_XXX( string strKey, void<em> value );<br/>
     <content type="html"><![CDATA[<h1>可持续集成 Jenkins</h1>
 
 <h2>概述</h2>
+
+<!--more-->
+
 
 <h2>安装手册</h2>
 

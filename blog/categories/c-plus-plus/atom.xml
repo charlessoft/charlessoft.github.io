@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/c-plus-plus/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-10T00:56:20+08:00</updated>
+  <updated>2014-05-10T02:08:41+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -14,297 +14,82 @@
 
   
   <entry>
-    <title type="html"><![CDATA[把json字符串转换成C++类对象(一)]]></title>
-    <link href="http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/"/>
-    <updated>2014-05-09T13:49:11+08:00</updated>
-    <id>http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus</id>
+    <title type="html"><![CDATA[把json字符串转换成C++类对象(二)]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/05/10/json2c-plus-plus2/"/>
+    <updated>2014-05-10T01:25:15+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/05/10/json2c-plus-plus2</id>
     <content type="html"><![CDATA[<h2>概述</h2>
 
-<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.</p>
+<p>上一篇文章中讲述了在C++中如何把json字符串转换成c++类对象,<a href="http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a>其中使用到了开源库(jsoncpp),函数指针,事先需要声明每个类相关代码,遍历完毕json字符串就得到对应类对象</p>
 
-<h2>相关库</h2>
+<!--more-->
 
-<h3>1. jsoncpp</h3>
 
-<p>用于解析、遍历json库</p>
-
-<h2>原理</h2>
-
-<h3>1. 遍历json</h3>
-
-<h3>2. 函数指针赋值</h3>
-
-<p>根据json字符串,定义对应类,例如:</p>
-
-<p>```
-{</p>
-
-<pre><code>"students": [
-    {
-        "name": "zhangsan",
-        "age": 20,
-        "sex": "男"
-    },
-    {
-        "name": "lisi",
-        "age": 21,
-        "sex": "女"
-    }
-]
-</code></pre>
-
-<p>}</p>
+<p>事先声明的代码</p>
 
 <p>```</p>
 
-<p>从以上json格式看,<code>students</code>节点包含2个数组,每个数组中都有一个<code>name</code>和<code>age</code>, 我们可以定义2个类, <code>CStudents</code>和<code>CStudentItem</code>类,
-<code>CStudents</code>包含<code>CStudentItem</code>成员对象, <code>CStudentItem</code>包含<code>name</code>、<code>age</code>和<code>sex</code>成员函数</p>
+<p>typedef void ( CStudentItem::<em>StudentItemFunc )( string key, void</em> value );</p>
 
-<p>```
-class CStudentItem
-{
-private:</p>
+<p>typedef map&lt;string, StudentItemFunc>JsonMethodMap;</p>
 
-<pre><code>CStudentItem(){}
+<p>JsonMethodMap m_jsonMethodMap;</p>
 
-virtual ~CStudentItem(){}
+<p>void Set_XXX( string strKey, void* value );</p>
 
-string m_name;
+<p>virtual void DealJsonNode( string strNode, string value );</p>
 
-int_ptr_t m_age;
-
-string sex;
-</code></pre>
-
-<p>};</p>
-
-<p>class CStudents
-{
-private:</p>
-
-<pre><code>vector&lt;CStudentItem*&gt; m_StudentItemArr;
-</code></pre>
-
-<p>};</p>
+<p>virtual void DealJsonNode( string strNode, int value );</p>
 
 <p>```</p>
 
-<p>下一步 我们需要解析Json,把json中对象的值设置到以上对应的类对象中,我们就面临2个问题,<br/>
-1. 怎么遍历?可以从jsoncpp的demo中找到答案-见下面代码<br/>
-2. 遍历完怎么设置到对应对象中?使用函数指针.</p>
+<p>当json字符串很多的时候.就造成每次都要声明重复的代码,过程很繁琐,而且容易写错,如何解决这个问题,或者可以相对简便些?</p>
 
-<h4>遍历json</h4>
+<p>我想到了用宏定义来声明函数类似MFC中插入DECLARE_DYNAMIC等宏的方式,</p>
 
-<p>建立一个IParseJson类,用于解析遍历Json<br/>
-IParseJson.h
+<p>我们把重复的代码提取出来,变成宏定义,插入到类声明中</p>
+
+<p>宏定义
 ```</p>
 
-<p>class IParseJson<br/>
-{</p>
+<h1>define JSON_TYPE_STRING 1</h1>
 
-<p>public:</p>
+<h1>define JSON_TYPE_INT 2</h1>
 
-<pre><code>IParseJson() {}   
+<h1>define JSON_TYPE_DOUBLE 3</h1>
 
-virtual ~IParseJson() {}
+<h1>define JSON_DEFINE_METHODMAP( theclass ) \</h1>
 
-virtual BOOL ParseJson( const char* json );
+<pre><code>typedef void ( theclass::*theclass##Func )( string strNode, void* value ); \
+    typedef map&lt;string, theclass##Func&gt;JsonMethodMap; \
+        JsonMethodMap m_jsonmapfunc;
 </code></pre>
 
-<p>protected:</p>
+<h1>define JSON_DEAL_NODE_STRING() \</h1>
 
-<pre><code>virtual void DealJsonNode( string strNode, string value ){}
-
-virtual void DealJsonNode( string strNode, int value ){}
-
-virtual void DealJsonNode( string strNode, unsigned int value ){}
-
-virtual void DealJsonNode( string strNode, double value ){}
-
-virtual IParseJson* CreateJsonItem( string strKey );
+<pre><code>virtual void DealJsonNode( string strNode, string value ){ \
+    JsonMethodMap::iterator Iter = m_jsonmapfunc.find( strNode ); \
+    if ( Iter != m_jsonmapfunc.end() ) \
+    { \
+        (this-&gt;*m_jsonmapfunc[strNode])( strNode,  (void*)value.c_str() ); \
+    } \
+}
 </code></pre>
 
-<p>private:</p>
+<h1>define JSON_DEAL_NODE_INT() \</h1>
 
-<pre><code>virtual void PrintValueTree( Json::Value &amp;value, IParseJson* pParent, IParseJson* pCurObj, const std::string strkey );
+<pre><code>virtual void DealJsonNode( string strNode, int value ){ \
+    JsonMethodMap::iterator Iter = m_jsonmapfunc.find( strNode ); \
+    if ( Iter != m_jsonmapfunc.end() ) \
+    { \
+        (this-&gt;*m_jsonmapfunc[strNode])( strNode,  (void*)value ); \
+    } \
+}
 </code></pre>
-
-<p>};</p>
 
 <p>```</p>
 
-<p><code>PrintValueTree</code> 遍历json,在遍历中处理各自结点信息<br/>
-<code>DealJsonNode</code> 在函数中,参数strNode是传递进来的结点名字,查找map对应的函数指针,进行赋值<br/>
-<code>CreateJsonItem</code> 在函数中,参数strKey针对传递进来的结点名字,进行判断处理是否生成员变量对象.</p>
-
-<p>IParseJson.cpp
-```</p>
-
-<h1>include <algorithm> // sort</h1>
-
-<h1>include &lt;stdio.h></h1>
-
-<h1>include &lt;stddef.h></h1>
-
-<h1>include <sstream></h1>
-
-<p>IParseJson* IParseJson::CreateJsonItem( string strKey )
-{</p>
-
-<pre><code>return this;
-</code></pre>
-
-<p>}</p>
-
-<p>void IParseJson::PrintValueTree( Json::Value &amp;value, IParseJson<em> pParent, IParseJson</em> pobj, const std::string strkey )
-{</p>
-
-<pre><code>IParseJson* pTmpJsonNode = NULL;
-switch ( value.type() )
-{
-    case Json::nullValue:
-        {
-            break;
-        }
-    case Json::intValue:
-        pobj-&gt;DealJsonNode( strkey, value.asInt() );
-        break;
-    case Json::uintValue:
-        pobj-&gt;DealJsonNode( strkey, value.asUInt() );
-        break;
-    case Json::realValue:
-        pobj-&gt;DealJsonNode( strkey, value.asDouble() );
-        break;
-    case Json::stringValue:
-        pobj-&gt;DealJsonNode( strkey, value.asString() );
-        break;
-    case Json::booleanValue:
-        pobj-&gt;DealJsonNode( strkey, value.asBool() );
-        break;
-    case Json::arrayValue:
-        {
-            int size = value.size();
-
-            for ( int index =0; index &lt; size; ++index )
-            {
-                pTmpJsonNode = pParent-&gt;CreateJsonItem( strkey );
-                PrintValueTree( value[index], pParent, pTmpJsonNode, strkey );
-            }
-
-        }
-        break;
-    case Json::objectValue:
-        {
-            Json::Value::Members members( value.getMemberNames() );
-            std::sort( members.begin(), members.end() );
-            std::string suffix = "";
-            for ( Json::Value::Members::iterator it = members.begin();
-                    it != members.end();
-                    ++it )
-            {
-                const std::string &amp;name = *it;
-
-                PrintValueTree( value[name], pobj, pobj, name );
-
-            }
-        }
-        break;
-    default:
-        break;
-}
-</code></pre>
-
-<p>}</p>
-
-<p>BOOL IParseJson::ParseJson( const char* json )
-{</p>
-
-<pre><code>Json::Features features;
-Json::Reader reader( features );
-Json::Value root;
-bool parsingSuccessful = reader.parse( json, root );
-if ( !parsingSuccessful )
-{
-    return FALSE;
-}
-
-PrintValueTree( root, this, this , "" );
-return TRUE;
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-
-<h4>函数指针</h4>
-
-<p>事先定义好函数,在各自函数中赋值对象值,用来遍历json时候,调用该函数,进行赋值<br/>
-void Set_XXX( string strKey, void<em> value );<br/>
-其中XXX为自定义的函数名称,取一个和json对象对应的名字, 例如: void Set_Name( string strKey, void</em> value );
-代码修改成如下格式:</p>
-
-<p>```</p>
-
-<p>class CStudentItem
-{
-private:</p>
-
-<pre><code>string m_name;
-
-int m_age;
-
-string sex;
-
-//设置函数指针
-CStudentItem()
-{
-    //设置结点对应的函数指针
-    m_jsonMethonMap["name"] = &amp;CStudentItem::Set_Name;
-    m_jsonMethonMap["age"] = &amp;CStudentItem::Set_Age;
-    m_jsonMethonMap["sex"] = &amp;CStudentItem::Set_Sex;
-}
-
-virtual ~CStudentItem(){}
-
-typedef void ( CStudentItem::*StudentItemFunc )( string key, void* value );
-
-typedef map&lt;string, StudentItemFunc&gt;JsonMethodMap;
-
-JsonMethodMap m_jsonMethonMap;
-
-void Set_Name( string strKey, void* value )
-{
-    this-&gt;m_name = (char*)value;
-}
-
-void Set_Age( string strKey, void* value )
-{
-    this-&gt;m_age = atoi((char*)value));
-}
-
-void Set_Sex( string strKey, void* value )
-{
-    this-&gt;m_sex = (char*)value;
-}
-//设置函数指针
-</code></pre>
-
-<p>};</p>
-
-<p>class CStudents
-{
-private:</p>
-
-<pre><code>vector&lt;CStudentItem*&gt; m_StudentItemArr;
-</code></pre>
-
-<p>};</p>
-
-<p>```</p>
-
-<p>现在实现了遍历Json,定义好函数指针后,怎么赋值?<br/>
-我们让所有类都继承IParseJson, 实现DealJsonNode 函数,就可以实现对个类对象进行赋值<br/>
-修改后的代码:</p>
+<p>修改后的代码</p>
 
 <p>```</p>
 
@@ -328,11 +113,13 @@ private:</p>
 
     virtual ~CStudentItem(){}
 
-    typedef void ( CStudentItem::*StudentItemFunc )( string key, void* value );
+    //定义 JsonMethodMap
+    DECLARE_DYNAMIC( CStudentItem )
 
-    typedef map&lt;string, StudentItemFunc&gt;JsonMethodMap;
+    JSON_TYPE_STRING()
 
-    JsonMethodMap m_jsonMethodMap;
+    JSON_TYPE_INT()
+    //定义 JsonMethodMap
 
     void Set_Name( string strKey, void* value )
     {
@@ -352,24 +139,6 @@ private:</p>
 
 
     //在map中找到对应的函数指针,对成员变量进行赋值
-    virtual void DealJsonNode( string strNode, string value )
-    {
-        JsonMethodMap::iterator Iter = m_jsonMethodMap.find( strNode );
-        if ( Iter != m_jsonMethodMap.end() )
-        {
-            (this-&gt;*m_jsonMethodMap[strNode])( strNode,  (void*)value.c_str() );
-        }
-    }
-
-    virtual void DealJsonNode( string strNode, int value )
-    {
-        JsonMethodMap::iterator Iter = m_jsonMethodMap.find( strNode );
-        if ( Iter != m_jsonMethodMap.end() )
-        {
-            (this-&gt;*m_jsonMethodMap[strNode])( strNode,  (void*)value );
-        }
-    }
-    //在map中找到对应的函数指针,对成员变量进行赋值
 
     virtual IParseJson* CreateJsonItem( string strKey )
     {
@@ -381,51 +150,7 @@ private:</p>
 
 <p>```</p>
 
-<p>调用</p>
-
-<p>main.cpp</p>
-
-<p>```</p>
-
-<h1>include &lt;stdio.h></h1>
-
-<h1>include &lt;stdlib.h></h1>
-
-<h1>include <string></h1>
-
-<p>using namespace std;</p>
-
-<h1>pragma comment(lib,&ldquo;./jsoncpp/dbg/lib_json/json_vc10_libmtd.lib&rdquo;)</h1>
-
-<p>int main()
-{</p>
-
-<pre><code>string strJson = "{ \"students\": [ { \"name\": \"zhangsan\", \"age\": 20, \"sex\": \"男\" }, { \"name\": \"lisi\", \"age\": 21, \"sex\": \"女\" } ] }";
-CStudents* pStudents = new CStudents;
-pStudents-&gt;ParseJson( strJson.c_str() );
-for( int i=0;i&lt;pStudents-&gt;m_StudentItemArr.size(); i++ )
-{
-    CStudentItem* pStudentItem = pStudents-&gt;m_StudentItemArr.at(i);
-    printf("name:%s\r\nage:%d\r\nsex:%s\r\n-----\r\n",pStudentItem-&gt;m_name.c_str(),
-        pStudentItem-&gt;m_age,pStudentItem-&gt;m_sex.c_str() );
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>结果:</p>
-
-<p><img src="/../images/json_to_obj/1.png"></p>
-
-<p>小结:</p>
-
-<p>只要声明好各个类成员变量并设置好对应的函数,就可以把json字符串转换成对应的类对象,
-每个类对象都需要定义JsonMethodMap来保存函数指针,对于少量的json字符串,还可以接受,如果json字符串比较多,并且包含多个json数组等,我们就需要声明多个类,并且每个类都需要处理JsonMethodMap,比较繁琐,而且容易出错.</p>
-
-<p>如何解决这个问题?可以使用一些宏定义,类似MFC中的定义一些列宏的思想来解决. 下文介绍</p>
-
-<p><a href="http://url.cn/KmkwHO">json2obj demo</a></p>
+<p>剩下的每个类就只需要定义Set_XXX进行设置就好了. 后期看看怎么把Set_XXX函数进行优化.</p>
 ]]></content>
   </entry>
   

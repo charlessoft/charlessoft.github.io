@@ -9,9 +9,7 @@
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="概述 c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象. 相关库 1. jsoncpp 用于解析、遍历json库 原理 1. 遍历json 2. 函数指针赋值 根据json字符串,定义对应类,例如: 1
-2
-3 &hellip;">
+  <meta name="description" content="概述 c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.本文介绍如何把json字符串转成C++类对象 相关库 1. jsoncpp 用于解析、遍历json库 原理 1. 遍历json 2. 函数指针赋值 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,7 +86,10 @@
 
 <div class="entry-content"><h2>概述</h2>
 
-<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.</p>
+<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.本文介绍如何把json字符串转成C++类对象</p>
+
+<!--more-->
+
 
 <h2>相关库</h2>
 
@@ -799,6 +800,8 @@ void Set_XXX( string strKey, void<em> value );<br/>
         <a class="basic-alignment left" href="/blog/2014/05/07/jenkins-install/" title="Previous Post: jenkins_install">&laquo; jenkins_install</a>
       
       
+        <a class="basic-alignment right" href="/blog/2014/05/10/json2c-plus-plus2/" title="Next Post: 把json字符串转换成C++类对象(二)">把json字符串转换成C++类对象(二) &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -810,14 +813,19 @@ void Set_XXX( string strKey, void<em> value );<br/>
     <section> 
 <h1>文章分类</h1> 
 <ul id="categories"> 
+<li class='category'><a href='/blog/categories/c-/'>C++ (1)</a></li>
 <li class='category'><a href='/blog/categories/c-/'>c++ (1)</a></li>
 <li class='category'><a href='/blog/categories/持续集成/'>持续集成 (1)</a></li>
  
 </ul> 
 </section>
 <section>
-  <h1>Recent Posts</h1>
+  <h1>近期文章</h1>
   <ul id="最新文章">
+    
+      <li class="post">
+        <a href="/blog/2014/05/10/json2c-plus-plus2/">把json字符串转换成C++类对象(二)</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a>
