@@ -121,11 +121,11 @@ vi /home/charles/svndata/repos/conf/svnserve.conf
 去掉 passwd-db = passwd 的注释
 
 
-![image](../images/jenkins_install/jenkins_install_pic_1.png)
+{% img /../images/jenkins_install/jenkins_install_pic_1.png %}  
 
 修改 passwd 文件,增加用户和密码
 
-![image](../images/jenkins_install//jenkins_install_pic_2.png)
+{% img /../images/jenkins_install/jenkins_install_pic_2.png %}  
 
 启动svn服务
 
@@ -162,16 +162,16 @@ ln -s apache-tomcat-7.0.52 apache-tomcat cd apache-tomcat/bin
 ./startup.sh
 ```
 
-![image](../images/jenkins_install/jenkins_install_pic_3.png)
+{% img /../images/jenkins_install/jenkins_install_pic_3.png %}  
 
 打开web页面 http://localhost:8080
 
-![image](../images/jenkins_install/jenkins_install_pic_4.png)
+{% img /../images/jenkins_install/jenkins_install_pic_4.png %}  
 
 修改utf8编码
 vi /etc/local/java/apache-tomcat-7.0.52/conf/server.xml
 
-![image](../images/jenkins_install/jenkins_install_pic_5.png)
+{% img /../images/jenkins_install/jenkins_install_pic_5.png %}  
 
 ####3.6. 安装jenkins  
 
@@ -216,16 +216,16 @@ chmod 700 authorized_keys
 ```
 
 4.1.4 在jenkins页面增加slave
-![image](../images/jenkins_install/jenkins_install_pic_6.png)
+{% img /../images/jenkins_install/jenkins_install_pic_6.png %}  
 增加证书  
-![image](../images/jenkins_install/jenkins_install_pic_7.png)
+{% img /../images/jenkins_install/jenkins_install_pic_7.png %}  
 设置 publish over ssh  
-![image](../images/jenkins_install/jenkins_install_pic_8.png)
+{% img /../images/jenkins_install/jenkins_install_pic_8.png %}  
 
 ####4.2. windows slave  
 
 4.2.1. 安装cygwin  
 
 选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
-![image](../images/jenkins_install/jenkins_install_pic_9.png)
+{% img /../images/jenkins_install/jenkins_install_pic_9.png %}  
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中
