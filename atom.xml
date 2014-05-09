@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-09T13:40:44+08:00</updated>
+  <updated>2014-05-09T13:42:29+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -291,24 +291,6 @@ java -jar jenkins.war</p>
 <p>选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
 <img src="../images/jenkins_install/jenkins_install_pic_9.png" alt="image" />
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jenkins]]></title>
-    <link href="http://charlessoft.github.io/blog/2014/05/07/jenkins/"/>
-    <updated>2014-05-07T11:56:33+08:00</updated>
-    <id>http://charlessoft.github.io/blog/2014/05/07/jenkins</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hello]]></title>
-    <link href="http://charlessoft.github.io/blog/2014/05/07/hello/"/>
-    <updated>2014-05-07T11:35:21+08:00</updated>
-    <id>http://charlessoft.github.io/blog/2014/05/07/hello</id>
-    <content type="html"><![CDATA[<p>hello</p>
 ]]></content>
   </entry>
   
