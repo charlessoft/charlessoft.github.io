@@ -3,7 +3,7 @@ layout: post
 title: "jenkins_install"
 date: 2014-05-07 11:57:41 +0800
 comments: true
-categories: 
+categories: 持续集成
 ---
 
 #可持续集成 Jenkins
