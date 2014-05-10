@@ -4,7 +4,7 @@
   <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-10T02:11:32+08:00</updated>
+  <updated>2014-05-10T16:17:28+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[V8 Engine编译]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/05/10/v8-enginebian-yi/"/>
+    <updated>2014-05-10T15:32:28+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/05/10/v8-enginebian-yi</id>
+    <content type="html"><![CDATA[<h1>概述</h1>
+
+<p>V8 Engine 用来编译javascript, chrome浏览器就是使用该引擎,V8 引擎是独立的模块,可以直接嵌入到程序中执行js脚本</p>
+
+<!--more-->
+
+
+<h2>windows 编译</h2>
+
+<h3>1. 工具</h3>
+
+<blockquote><p>V8</p>
+
+<p>svn checkout <a href="http://v8.googlecode.com/svn/branches/bleeding_edge/">http://v8.googlecode.com/svn/branches/bleeding_edge/</a> v8</p>
+
+<p>python</p>
+
+<p>svn co <a href="http://src.chromium.org/svn/trunk/tools/thirdparty/python26@89111">http://src.chromium.org/svn/trunk/tools/thirdparty/python26@89111</a> thirdparty/python26</p>
+
+<p>cygwin</p>
+
+<p>svn co <a href="http://src.chromium.org/svn/trunk/deps/thirdparty/cygwin@231940">http://src.chromium.org/svn/trunk/deps/thirdparty/cygwin@231940</a> thirdparty/cygwin</p>
+
+<p>icu</p>
+
+<p>svn co <a href="https://src.chromium.org/chrome/trunk/deps/thirdparty/icu46">https://src.chromium.org/chrome/trunk/deps/thirdparty/icu46</a> thirdparty/icu</p>
+
+<p>gyp</p>
+
+<p>svn co <a href="http://gyp.googlecode.com/svn/trunk">http://gyp.googlecode.com/svn/trunk</a> build/gyp</p></blockquote>
+
+<h3>2. 编译步骤</h3>
+
+<blockquote><p>把下载后的third_party拷贝到v8目录下,设置python的环境变量,方便直接调用python命令</p>
+
+<p>cd 到v8目录下,执行命令python build\gyp_v8 生成工程文件</p>
+
+<p>&ldquo;c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com&rdquo; /build Release build\All.sln</p></blockquote>
+
+<h3>3. 调试步骤</h3>
+
+<blockquote><p>使用vs2010打开All.sln编译好的工程,
+可以进行调试,设置启动项为 sample/shell,运行shell print(&lsquo;hello world!&rsquo;);</p></blockquote>
+
+<h3>4. 参考资料</h3>
+
+<blockquote><p><a href="http://blog.chinaunix.net/uid-8272118-id-2033359.html">关于V8 JavaScript Engine的使用方法研究(一)</a></p>
+
+<p><a href="http://www.cppblog.com/weiym/archive/2012/05/19/175374.html">如何在程序中嵌入google的V8 Javascript引擎</a></p>
+
+<p><a href="http://blog.csdn.net/zengraoli/article/details/9178219">编译v8引擎</a></p>
+
+<p><a href="https://code.google.com/p/v8/wiki/BuildingWithGYP">BuildingWithGYP</a></p>
+
+<p><a href="http://hi.baidu.com/hycjk/item/f137d2e5616e64b52f140bd7">V8系列——内存管理(1)</a></p>
+
+<p><a href="http://hi.baidu.com/hycjk/item/c79470d1f35fac95260ae7da">V8系列——内存管理</a></p></blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[把json字符串转换成C++类对象(二)]]></title>
