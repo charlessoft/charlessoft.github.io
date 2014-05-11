@@ -170,8 +170,7 @@ source /etc/profile
 ```
 
 ####3.5. 安装tomcat
-下载地址:http://tomcat.apache.org/download-70.cgi#7.0.2
-
+下载地址:http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz
 ```
 cp apache-tomcat-7.0.52.tar /usr/local/ tar zxvf apache-tomcat-7.0.52.tar
 ln -s apache-tomcat-7.0.52 apache-tomcat cd apache-tomcat/bin
