@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 持续集成 | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/chi-xu-ji-cheng/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-10T16:17:28+08:00</updated>
+  <updated>2014-05-11T13:53:03+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -189,9 +189,8 @@ source /etc/profile
 
 <h4>3.5. 安装tomcat</h4>
 
-<p>下载地址:<a href="http://tomcat.apache.org/download-70.cgi#7.0.2">http://tomcat.apache.org/download-70.cgi#7.0.2</a></p>
-
-<p><code>
+<p>下载地址:<a href="http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz">http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz</a>
+<code>
 cp apache-tomcat-7.0.52.tar /usr/local/ tar zxvf apache-tomcat-7.0.52.tar
 ln -s apache-tomcat-7.0.52 apache-tomcat cd apache-tomcat/bin
 ./startup.sh
