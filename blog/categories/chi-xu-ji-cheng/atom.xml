@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 持续集成 | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/chi-xu-ji-cheng/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-20T23:37:39+08:00</updated>
+  <updated>2014-05-21T00:09:31+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Linux 批量增加用户]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/"/>
+    <updated>2014-05-20T23:10:05+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu</id>
+    <content type="html"><![CDATA[<h2>概述</h2>
+
+<p>linux下经常需要增加用户进行执行脚本,下文介绍使用shell脚本增加用户,可以实现批量增加用户.</p>
+
+<!--more-->
+
+
+<h2>步骤</h2>
+
+<h3>相关命令</h3>
+
+<ol>
+<li>newusers &mdash;新建用户</li>
+<li>chpasswd &mdash;修改用户密码</li>
+</ol>
+
+
+<p>建立一个和/etc/passwd 一样的文本内容userlist.txt
+```
+ubuntu00:x:520:520::/home/ubuntu00:/bin/bash
+ubuntu01:x:521:521::/home/ubuntu01:/bin/bash
+ubuntu02:x:522:522::/home/ubuntu02:/bin/bash
+ubuntu03:x:523:523::/home/ubuntu03:/bin/bash
+ubuntu04:x:524:524::/home/ubuntu04:/bin/bash
+ubuntu05:x:525:525::/home/ubuntu05:/bin/bash
+ubuntu06:x:526:526::/home/ubuntu06:/bin/bash
+ubuntu07:x:527:527::/home/ubuntu07:/bin/bash
+ubuntu08:x:528:528::/home/ubuntu08:/bin/bash
+ubuntu09:x:529:529::/home/ubuntu09:/bin/bash</p>
+
+<p>```</p>
+
+<p>建立一个password.txt 文件,保存用户名对应的密码,格式如下
+<code>
+ubuntu00:123456
+ubuntu01:123456
+ubuntu02:123456
+ubuntu03:123456
+ubuntu04:123456
+ubuntu05:123456
+ubuntu06:123456
+ubuntu07:123456
+ubuntu08:123456
+ubuntu09:123456
+</code></p>
+
+<h3>使用命令</h3>
+
+<p><code>
+newusers userlist.txt
+chpasswd &lt; password.txt
+</code>
+就添加完成了,su &ndash; ubuntu00 输入密码123456,就切换到该用户下,可以输入bash,使用bash.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jenkins_install]]></title>
