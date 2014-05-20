@@ -104,6 +104,8 @@ ln -s apache2.2.9 apache
 
 下载地址:https://archive.apache.org/dist/subversion/subversion-1.8.5.tar.gz
 
+sqlite 
+http://jaist.dl.sourceforge.net/project/sqlite.mirror/SQLite%203.8.3.1/sqlite-amalgamation-3080301.zip
 ```
 
 apt-get install zlib1g-dev
