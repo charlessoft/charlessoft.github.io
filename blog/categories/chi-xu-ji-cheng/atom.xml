@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 持续集成 | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/chi-xu-ji-cheng/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-11T13:53:03+08:00</updated>
+  <updated>2014-05-20T23:37:39+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -123,7 +123,9 @@ ln -s apache2.2.9 apache</p>
 
 <p>下载地址:<a href="https://archive.apache.org/dist/subversion/subversion-1.8.5.tar.gz">https://archive.apache.org/dist/subversion/subversion-1.8.5.tar.gz</a></p>
 
-<p>```</p>
+<p>sqlite
+<a href="http://jaist.dl.sourceforge.net/project/sqlite.mirror/SQLite%203.8.3.1/sqlite-amalgamation-3080301.zip">http://jaist.dl.sourceforge.net/project/sqlite.mirror/SQLite%203.8.3.1/sqlite-amalgamation-3080301.zip</a>
+```</p>
 
 <p>apt-get install zlib1g-dev
 tar zxvf subversin-1.8.5.tar.gz

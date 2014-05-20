@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://charlessoft.github.io/blog/2014/05/07/jenkins-install/</loc>
-        <lastmod>2014-05-11T13:52:05+08:00</lastmod>
+        <lastmod>2014-05-11T14:49:45+08:00</lastmod>
     </url>
     <url>
         <loc>
@@ -19,12 +19,16 @@
         <lastmod>2014-05-10T16:15:54+08:00</lastmod>
     </url>
     <url>
+        <loc>http://charlessoft.github.io/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/</loc>
+        <lastmod>2014-05-20T23:36:37+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://charlessoft.github.io/blog/archives/</loc>
-        <lastmod>2014-05-11T13:52:05+08:00</lastmod>
+        <lastmod>2014-05-20T23:36:37+08:00</lastmod>
     </url>
     <url>
         <loc>http://charlessoft.github.io/</loc>
-        <lastmod>2014-05-11T13:52:05+08:00</lastmod>
+        <lastmod>2014-05-20T23:36:37+08:00</lastmod>
     </url>
     <url>
         <loc>http://charlessoft.github.io/robots.txt</loc>
