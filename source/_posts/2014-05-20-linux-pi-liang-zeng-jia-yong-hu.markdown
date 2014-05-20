@@ -3,7 +3,7 @@ layout: post
 title: "linux 批量增加用户"
 date: 2014-05-20 23:10:05 +0800
 comments: true
-categories: 持续集成
+categories: ci 
 ---
 ##概述
 linux下经常需要增加用户进行执行脚本,下文介绍使用shell脚本增加用户,可以实现批量增加用户.

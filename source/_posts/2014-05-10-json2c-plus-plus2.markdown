@@ -3,7 +3,7 @@ layout: post
 title: "把json字符串转换成C++类对象(二)"
 date: 2014-05-10 01:25:15 +0800
 comments: true
-categories: C++
+categories: C
 ---
 
 ##概述
