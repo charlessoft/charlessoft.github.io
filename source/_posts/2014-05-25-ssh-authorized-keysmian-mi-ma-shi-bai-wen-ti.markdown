@@ -9,7 +9,7 @@ categories: Linux
 ##概述
 authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.
 
-经过测试免密码登陆CentOs Linux 6.5 X64位系统与authorized_keys文件权限有关系
+经过测试免密码登陆`CentOs Linux 6.5 X64位`系统与`authorized_keys`文件权限有关系
 
 
 {% img /../images/ssh_authorized/ssh_authorized_key_1.png %}  
