@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>学海拾贝 Blog</title>
+  <title>Authorized_keys权限导致登陆失败问题 - 学海拾贝 Blog</title>
   <meta name="author" content="charlessoft">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://charlessoft.github.io">
+  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="学海拾贝 Blog" type="application/atom+xml">
@@ -56,15 +56,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti/">Authorized_keys权限导致登陆失败问题</a></h1>
+      <h1 class="entry-title">Authorized_keys权限导致登陆失败问题</h1>
     
     
       <p class="meta">
@@ -87,7 +84,7 @@
   </header>
 
 
-  <div class="entry-content"><h2>概述</h2>
+<div class="entry-content"><h2>概述</h2>
 
 <p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
 
@@ -110,65 +107,16 @@
 <p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
 这样就可以连接上</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/">Linux 批量增加用户</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">charlessoft</span></span>
 
-<time datetime="2014-05-20T23:10:05+08:00" pubdate data-updated="true">May 20<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>概述</h2>
-
-<p>linux下经常需要增加用户进行执行脚本,下文介绍使用shell脚本增加用户,可以实现批量增加用户.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/10/v8-enginebian-yi/">V8 Engine编译</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -180,163 +128,36 @@
   
 
 
-<time datetime="2014-05-10T15:32:28+08:00" pubdate data-updated="true">May 10<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>概述</h1>
-
-<p>V8 Engine 用来编译javascript, chrome浏览器就是使用该引擎,V8 引擎是独立的模块,可以直接嵌入到程序中执行js脚本</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/10/v8-enginebian-yi/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/10/json2c-plus-plus2/">把json字符串转换成C++类对象(二)</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/linux/'>Linux</a>
+  
+</span>
 
 
-<time datetime="2014-05-10T01:25:15+08:00" pubdate data-updated="true">May 10<span>th</span>, 2014</time>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><h2>概述</h2>
-
-<p>上一篇文章中讲述了在C++中如何把json字符串转换成c++类对象,<a href="http://charlessoft.github.io/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a>其中使用到了开源库(jsoncpp),函数指针,事先需要声明每个类相关代码,遍历完毕json字符串就得到对应类对象</p>
-
+      <div class="sharing">
+  
+  
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/10/json2c-plus-plus2/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-09T13:49:11+08:00" pubdate data-updated="true">May 9<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>概述</h2>
-
-<p>c++中获取到json字符串后,每次需要遍历json字符串,然后把该json字符串中各个key对应的value取出来,赋值给各自的类对象.本文介绍如何把json字符串转成C++类对象</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/" title="Previous Post: linux 批量增加用户">&laquo; linux 批量增加用户</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/07/jenkins-install/">Jenkins_install</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-07T11:57:41+08:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>可持续集成 Jenkins</h1>
-
-<h2>概述</h2>
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/07/jenkins-install/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section> 
@@ -378,6 +199,7 @@
 
   
 </aside>
+
 
     </div>
   </div>
