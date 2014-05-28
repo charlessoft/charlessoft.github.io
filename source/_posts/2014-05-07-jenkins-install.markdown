@@ -8,6 +8,27 @@ categories: ci
 
 #可持续集成 Jenkins
 
+##目录
+1. 环境  
+2. 软件  
+2.1. Jenkins  
+2.2. Subversion  
+2.3. Apache  
+2.4. Jdk6  
+2.5. Tomcat  
+2.6. Python Jenkins模块    
+3. 安装步骤  
+3.1. Jdk 安装和配置  
+3.2. 安装 apache  
+3.3. 安装subversion  
+3.4. 安装maven  
+3.5. 安装tomcat  
+3.6. 安装jenkins    
+3.7. 安装jenkins插件  
+4. 配置  
+4.1. Linux slave    
+4.2. windows slave    
+5. 测试git 仓库
 ##概述
 
 
@@ -22,7 +43,7 @@ ububtu 13.4
 2.3. Apache(可选)  
 2.4. Jdk6  
 2.5. Tomcat(可选)  
-2.7. Python Jenkins模块  
+2.6. Python Jenkins模块  
 
 ###3. 安装步骤
 
@@ -210,6 +231,12 @@ cp jenkins.war /usr/local/apache-tomcat/webapps
 
 Publish Over SSH -->用来控制发布程序后执行脚本
 
+####3.8. git 插件  
+git 插件用于连接git 仓库. jenkins默认是不带git 插件,需要自行安装. 
+安装的git插件分别是:  
+**scm-api**  
+**git-client**  
+**git**  
 
 
 ###4. 配置
@@ -246,5 +273,19 @@ chmod 700 authorized_keys
 选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
 {% img /../images/jenkins_install/jenkins_install_pic_9.png %}  
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中
+
+###5. 测试git 仓库
+例如代码库地址:test@114.114.114.114:/home/test/submd/repos/testProject.git
+
+我们需要把登陆到114.114.114.114的账号增加到authorized_keys(免密码登陆,请百度),否则会更新不成功,会提示以下错误  
+{% img /../images/jenkins_install/jenkins_install_pic_10.png %}  
+
+登陆到ci 服务器配置该工程信息
+{% img /../images/jenkins_install/jenkins_install_pic_11.png %}  
+
+{% img /../images/jenkins_install/jenkins_install_pic_12.png %}  
+
+构建工程,可以看到输出的结果
+{% img /../images/jenkins_install/jenkins_install_pic_13.png %}  
 
 
