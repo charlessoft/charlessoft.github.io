@@ -463,10 +463,9 @@ tomcat 必须是该用户启动的,否则也会提示以下错误
 
 <h4>Q: ssh 连接到slave时候,输入正确的账号密码,但经常遇到Permission denied 问题</h4>
 
-<h4>A: 一种是由于authorized_keys 权限设置不对导致,设置authorized_keys 权限为644</h4>
+<h4>A: 一种是由于authorized_keys 权限设置不对导致,设置authorized_keys 权限为644,一种由于账号没配置对导致,可以执行以下命令</h4>
 
-<pre><code>   一种由于账号没配置对导致,执行命令`mkpasswd.exe -l &gt; /etc/pass`   
-</code></pre>
+<p><code>mkpasswd.exe -l &gt; /etc/pass</code></p>
 </div>
 
 
