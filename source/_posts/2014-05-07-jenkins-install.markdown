@@ -295,3 +295,8 @@ tomcat 必须是该用户启动的,否则也会提示以下错误
 ####Q: slave /usr/bin/java does not found
 ####A: slave中需要安装jdk,jenkins默认查找jdk的路径是/usr/bin/java,解决方法,设置ln链接, 在cygwin中输入以下命令 
 	ln -s /cygdrive/c/Program\ Files\ \(x86\)/Java/jdk1.6.0_38/bin/java.exe /usr/bin/java
+
+####Q: 在slave中经常遇到stderr:Host key verification failed.
+####A: 网上大部分是说把knows_keys删除掉,貌似没有效果.个人感觉最有效的方法.就是使用master中ssh到各个slave中,再ssh到代码仓库中,把id_rsa.pub增加到authorized_keys中(免密码登陆).
+
+{% img /../images/jenkins_install/jenkins_install_pic_14.png %}  
