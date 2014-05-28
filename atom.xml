@@ -4,7 +4,7 @@
   <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-29T00:34:34+08:00</updated>
+  <updated>2014-05-29T02:21:49+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -1125,7 +1125,8 @@ void Set_XXX( string strKey, void<em> value );<br/>
 <li>配置<br/>
 4.1. Linux slave  <br/>
 4.2. windows slave</li>
-<li>测试git 仓库
+<li>测试git 仓库</li>
+<li>遇到问题以及解决
 
 <h2>概述</h2></li>
 </ol>
@@ -1441,15 +1442,24 @@ java -jar jenkins.war</p>
 <p>例如代码库地址:test@114.114.114.114:/home/test/submd/repos/testProject.git</p>
 
 <p>我们需要把登陆到114.114.114.114的账号增加到authorized_keys(免密码登陆,请百度),否则会更新不成功,会提示以下错误<br/>
-<img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_10.png"></p>
-
-<p>登陆到ci 服务器配置该工程信息
+tomcat 必须是该用户启动的,否则也会提示以下错误
+<img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_10.png"><br/>
+登陆到ci 服务器配置该工程信息
 <img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_11.png"></p>
 
 <p><img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_12.png"></p>
 
 <p>构建工程,可以看到输出的结果
 <img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_13.png"></p>
+
+<h3>6. 遇到问题以及解决</h3>
+
+<h4>Q: slave /usr/bin/java does not found</h4>
+
+<h4>A: slave中需要安装jdk,jenkins默认查找jdk的路径是/usr/bin/java,解决方法,设置ln链接, 在cygwin中输入以下命令</h4>
+
+<pre><code>ln -s /cygdrive/c/Program\ Files\ \(x86\)/Java/jdk1.6.0_38/bin/java.exe /usr/bin/java
+</code></pre>
 ]]></content>
   </entry>
   
