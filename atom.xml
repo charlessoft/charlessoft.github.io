@@ -4,7 +4,7 @@
   <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-25T16:53:40+08:00</updated>
+  <updated>2014-05-29T00:34:34+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -1103,7 +1103,33 @@ void Set_XXX( string strKey, void<em> value );<br/>
     <id>http://charlessoft.github.io/blog/2014/05/07/jenkins-install</id>
     <content type="html"><![CDATA[<h1>可持续集成 Jenkins</h1>
 
-<h2>概述</h2>
+<h2>目录</h2>
+
+<ol>
+<li>环境</li>
+<li>软件<br/>
+2.1. Jenkins<br/>
+2.2. Subversion<br/>
+2.3. Apache<br/>
+2.4. Jdk6<br/>
+2.5. Tomcat<br/>
+2.6. Python Jenkins模块</li>
+<li>安装步骤<br/>
+3.1. Jdk 安装和配置<br/>
+3.2. 安装 apache<br/>
+3.3. 安装subversion<br/>
+3.4. 安装maven<br/>
+3.5. 安装tomcat<br/>
+3.6. 安装jenkins  <br/>
+3.7. 安装jenkins插件</li>
+<li>配置<br/>
+4.1. Linux slave  <br/>
+4.2. windows slave</li>
+<li>测试git 仓库
+
+<h2>概述</h2></li>
+</ol>
+
 
 <!--more-->
 
@@ -1121,7 +1147,7 @@ void Set_XXX( string strKey, void<em> value );<br/>
 2.3. Apache(可选)<br/>
 2.4. Jdk6<br/>
 2.5. Tomcat(可选)<br/>
-2.7. Python Jenkins模块</p>
+2.6. Python Jenkins模块</p>
 
 <h3>3. 安装步骤</h3>
 
@@ -1359,6 +1385,14 @@ java -jar jenkins.war</p>
 
 <p>Publish Over SSH &mdash;>用来控制发布程序后执行脚本</p>
 
+<h4>3.8. git 插件</h4>
+
+<p>git 插件用于连接git 仓库. jenkins默认是不带git 插件,需要自行安装.
+安装的git插件分别是:<br/>
+<strong>scm-api</strong><br/>
+<strong>git-client</strong><br/>
+<strong>git</strong></p>
+
 <h3>4. 配置</h3>
 
 <h4>4.1. Linux slave</h4>
@@ -1401,6 +1435,21 @@ java -jar jenkins.war</p>
 <p>选择安装ssh服务,cygwin默认是不安装OpenSSH的,需要手动选,在Netl类别下选上OpenSSH和OpenSSL两项
 <img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_9.png"><br/>
 等到下载完并完成安装,设置环境变量,把C:/cygwin/bin;C:/cygwin/usr/bin 加 入到系统环境变量的 Path 中</p>
+
+<h3>5. 测试git 仓库</h3>
+
+<p>例如代码库地址:test@114.114.114.114:/home/test/submd/repos/testProject.git</p>
+
+<p>我们需要把登陆到114.114.114.114的账号增加到authorized_keys(免密码登陆,请百度),否则会更新不成功,会提示以下错误<br/>
+<img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_10.png"></p>
+
+<p>登陆到ci 服务器配置该工程信息
+<img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_11.png"></p>
+
+<p><img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_12.png"></p>
+
+<p>构建工程,可以看到输出的结果
+<img src="http://charlessoft.github.io/../images/jenkins_install/jenkins_install_pic_13.png"></p>
 ]]></content>
   </entry>
   
