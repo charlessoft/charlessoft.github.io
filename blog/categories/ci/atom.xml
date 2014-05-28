@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ci | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/ci/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-05-29T03:01:07+08:00</updated>
+  <updated>2014-05-29T03:18:29+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -390,6 +390,13 @@ tomcat 必须是该用户启动的,否则也会提示以下错误
 <h4>A: 网上大部分是说把knows_keys删除掉,貌似没有效果.个人感觉最有效的方法.就是使用master中ssh到各个slave中,再ssh到代码仓库中,把id_rsa.pub增加到authorized_keys中(免密码登陆).</h4>
 
 <p><img src="/../images/jenkins_install/jenkins_install_pic_14.png"></p>
+
+<h4>Q: ssh 连接到slave时候,输入正确的账号密码,但经常遇到Permission denied 问题</h4>
+
+<h4>A: 一种是由于authorized_keys 权限设置不对导致,设置authorized_keys 权限为644</h4>
+
+<pre><code>   一种由于账号没配置对导致,执行命令`mkpasswd.exe -l &gt; /etc/pass`   
+</code></pre>
 ]]></content>
   </entry>
   
