@@ -278,7 +278,7 @@ chmod 700 authorized_keys
 ###5. 测试git 仓库
 例如代码库地址:test@114.114.114.114:/home/test/submd/repos/testProject.git
 
-我们需要把登陆到114.114.114.114的账号增加到authorized_keys(免密码登陆,请百度),否则会更新不成功,会提示以下错误  
+我们需要把本机的id_rsa.pub保存到114.114.114.114的authorized_keys(免密码登陆,请百度),否则会更新不成功,会提示以下错误  
 tomcat 必须是该用户启动的,否则也会提示以下错误
 {% img /../images/jenkins_install/jenkins_install_pic_10.png %}  
 登陆到ci 服务器配置该工程信息
