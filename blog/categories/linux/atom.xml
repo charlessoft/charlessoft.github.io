@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-06-30T01:09:31+08:00</updated>
+  <updated>2014-06-30T01:10:25+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -473,6 +473,34 @@ return 0;
 <p><img src="/../images/linux_lock/linux_lock_pic_1.png"><br/>
 <img src="/../images/linux_lock/linux_lock_pic_2.png"><br/>
 <img src="/../images/linux_lock/linux_lock_pic_3.png"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Authorized_keys权限导致登陆失败问题]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti/"/>
+    <updated>2014-05-25T13:34:22+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti</id>
+    <content type="html"><![CDATA[<h2>概述</h2>
+
+<p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
+
+<p>经过测试免密码登陆<code>CentOs Linux 6.5 X64位</code>系统与<code>authorized_keys</code>文件权限有关系</p>
+
+<p><img src="/../images/ssh_authorized/ssh_authorized_key_1.png"><br/>
+有上图看出authorized_keys 权限是<code>-rw-rw-r-</code>
+即使把客户端的id_rsa.pub 保存到服务器的authorized_keys上也连接不了,需要把属性修改成<code>-rw-r--r--</code>或者<code>-rw------</code></p>
+
+<p>修改命令:</p>
+
+<p><code>
+chmod 644 authorized_keys
+或
+chmod 600 authorized_keys
+</code></p>
+
+<p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
+这样就可以连接上</p>
 ]]></content>
   </entry>
   
