@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ci | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/ci/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-06-01T23:55:45+08:00</updated>
+  <updated>2014-06-30T01:02:45+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Jenkins_plugin_邮件通知]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/06/03/jenkins-plugin-email-ext/"/>
+    <updated>2014-06-03T00:05:29+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/06/03/jenkins-plugin-email-ext</id>
+    <content type="html"><![CDATA[<h2>概述</h2>
+
+<p>使用jenkins持续编译程序后,可以发送编译的结果给特定的人员,以便邮件方式告知编译或测试结果
+jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,本文使用Email-ext plugin进行发送邮件</p>
+
+<h2>插件名称:</h2>
+
+<p><strong>Email-ext plugin</strong></p>
+
+<p>如果手工安装插件还需要安装 Token macro Plugin</p>
+
+<p>安装好插件后在jenkins->系统管理->系统配置里头就会看到<code>Extended E-email Notification</code>选项
+设置以下选项.就可以发送邮件</p>
+
+<p><img src="/../images/jenkins_plugin_email/jenkins_plugin_email_pic_1.png"></p>
+
+<h2>使用插件</h2>
+
+<p>在项目配置中选择<code>增加构建后操作步骤</code>&ndash;><code>E-email Notification</code>
+<img src="/../images/jenkins_plugin_email/jenkins_plugin_email_pic_2.png">
+当项目编译后.就会发送邮件到指定的用户</p>
+
+<h2>指定邮件模板</h2>
+
+<p>```</p>
+
+<p>```</p>
+
+<p>对邮件中字段详细说明待续再更新&mdash;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Linux 批量增加用户]]></title>

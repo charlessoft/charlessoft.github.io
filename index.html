@@ -9,7 +9,40 @@
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="概述 authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆. 经过测试免密码登陆CentOs Linux 6.5 &hellip;">
+  <meta name="description" content="读写锁,互斥锁封装 炼数成金的课程中把互斥锁和读写锁封装了一个类,一起分享下,适用windows/linux, 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,6 +91,645 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/30/linux-lock-package/">Linux_lock_package</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-30T00:58:59+08:00" pubdate data-updated="true">Jun 30<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>读写锁,互斥锁封装</h1>
+
+<p>炼数成金的课程中把互斥锁和读写锁封装了一个类,一起分享下,适用windows/linux,</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#ifndef _OSSLATCH_HPP_
+</span><span class='line'>#define _OSSLATCH_HPP_
+</span><span class='line'>
+</span><span class='line'>#include &lt;pthread.h&gt;
+</span><span class='line'>enum OSS_LATCH_MODE
+</span><span class='line'>{
+</span><span class='line'>    SHARED,
+</span><span class='line'>    EXCLUSIVE
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class ossXLatch
+</span><span class='line'>{
+</span><span class='line'>private:
+</span><span class='line'>    pthread_mutex_t _lock;
+</span><span class='line'>public:
+</span><span class='line'>    ossXLatch()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_mutex_init ( &_lock, 0 );
+</span><span class='line'>    }
+</span><span class='line'>    ~ossXLatch()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_mutex_destroy( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void get()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_mutex_lock( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void release()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_mutex_unlock( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    bool try_get()
+</span><span class='line'>    {
+</span><span class='line'>        return (pthread_mutex_trylock( &_lock ) == 0 );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>class ossSLatch
+</span><span class='line'>{
+</span><span class='line'>private:
+</span><span class='line'>    pthread_rwlock_t _lock;
+</span><span class='line'>
+</span><span class='line'>public:
+</span><span class='line'>    ossSLatch()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_rwlock_init( &_lock, 0 );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    ~ossSLatch()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_rwlock_destroy( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void get()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_rwlock_wrlock( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void release()
+</span><span class='line'>    {
+</span><span class='line'>         pthread_rwlock_unlock( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    bool try_get()
+</span><span class='line'>    {
+</span><span class='line'>        return ( pthread_rwlock_trywrlock( &_lock ) == 0);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void get_shared()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_rwlock_rdlock( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    void release_shared()
+</span><span class='line'>    {
+</span><span class='line'>        pthread_rwlock_unlock( &_lock );
+</span><span class='line'>    }
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>#endif
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>//调用</p>
+
+<h1>include &lt;stdio.h></h1>
+
+<h1>include &lt;stdlib.h></h1>
+
+<h1>include &lt;string.h></h1>
+
+<h1>include &ldquo;ossLatch.hpp&rdquo;</h1>
+
+<h1>include   &lt;unistd.h></h1>
+
+<p>ossXLatch Mutex_lock;
+ossSLatch Shared_lock;
+pthread_t id;
+pthread_t id1;</p>
+
+<p>void ReadLog( void *ptr )
+{</p>
+
+<pre><code>unsigned int pid = (unsigned int )ptr;
+printf("Thread %u lock--\n",pid);
+FILE* fp = fopen("log.txt","rb");
+if(fp)
+{
+    fseek(fp,0,SEEK_END);
+    int nlen = ftell(fp);
+    fseek(fp,0,SEEK_SET);
+    char* pData = new char[nlen+1];
+    memset(pData,0,nlen+1);
+    fread(pData,1,nlen,fp);
+    fclose(fp);
+    printf("%s",pData);
+    delete [] pData;
+}
+sleep(2);
+printf("Thread %u unlock--\n",pid);
+</code></pre>
+
+<p>}</p>
+
+<p>void <em>rd_lock_thread( void</em> ptr )
+{</p>
+
+<pre><code>Shared_lock.get_shared();
+printf("读锁,其他线程才可以进入\n");
+ReadLog( ptr );
+Shared_lock.release();
+</code></pre>
+
+<p>}</p>
+
+<p>void <em>rw_lock_thread( void</em> ptr )
+{</p>
+
+<pre><code>Shared_lock.get();
+printf("写锁,只有该线程解锁 %u ,其他线程才可以进入\n",(unsigned int ) ptr );
+ReadLog( ptr );
+Shared_lock.release();
+</code></pre>
+
+<p>}</p>
+
+<p>void <em>mutex_thread(void </em>ptr)
+{</p>
+
+<pre><code>Mutex_lock.get();
+printf("只有当 Thread %u 解锁,其他线程才可以进入--\n",(unsigned int ) ptr);
+ReadLog( ptr );
+Mutex_lock.release();
+</code></pre>
+
+<p>}</p>
+
+<p>int main(int argc, const char *argv[])
+{</p>
+
+<pre><code>int i,ret;
+
+
+printf("演示:mutex-互斥锁--\n");
+ret=pthread_create(&amp;id,NULL,mutex_thread,(void*)1);
+ret=pthread_create(&amp;id1,NULL,mutex_thread,(void*)2);
+pthread_join(id,NULL);
+pthread_join(id1,NULL);
+printf("-------------------------------------\n\n");
+
+printf("演示:读写锁--读锁--\n");
+ret=pthread_create(&amp;id,NULL,rd_lock_thread,(void*)1);
+ret=pthread_create(&amp;id1,NULL,rd_lock_thread,(void*)2);
+pthread_join(id,NULL);
+pthread_join(id1,NULL);
+
+printf("-------------------------------------\n\n");
+
+
+printf("演示:读写锁--写锁--\n");
+ret=pthread_create(&amp;id,NULL,rw_lock_thread,(void*)1);
+ret=pthread_create(&amp;id1,NULL,rw_lock_thread,(void*)2);
+pthread_join(id,NULL);
+pthread_join(id1,NULL);
+
+return 0;
+</code></pre>
+
+<p>}</p>
+
+<p>&#8220;`</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/29/linux-lock/">Linux_lock</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-29T23:49:52+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Linux下互斥锁,读写锁区别</h1>
+
+<h2>目录</h2>
+
+<p>1.互斥锁<br/>
+2.读写锁</p>
+
+<p>互斥锁 实现多个线程之间的同步,互斥锁主要函数<br/>
+1.pthread_mutex_init &ndash;>初始化 <br/>
+2.pthread_mutex_destroy &mdash;>销毁 <br/>
+3.pthread_mutex_lock &mdash;>加锁<br/>
+4.pthread_mutex_unlock &mdash;>解锁</p>
+
+<p>读写锁 比mutex有更高的适用性，可以多个线程同时占用读模式的读写锁，但是只能一个线程占用写模式的读写锁。<br/>
+当读写锁是读加锁状态,所有以读模式对它进行加锁的线程都可以获得到访问权,但是以写模式对它加锁的线程将阻塞<br/>
+当读写锁是写加锁状态,所以对该资源进行操作的线程都会阻塞,直到该锁解锁.<br/>
+读写锁函数<br/>
+1.pthread_rwlock_init &mdash;>初始化<br/>
+2.pthread_rwlock_destroy &mdash;>销毁<br/>
+3.pthread_rwlock_rdlock &mdash;>读锁定<br/>
+4.pthread_rwlock_unlock &mdash;>解锁,写锁定的解锁也是调用该函数<br/>
+5.pthread_rwlock_rwlock &mdash;>写锁定 <br/>
+6.pthread_rwlock_tryrdlock &mdash;>尝试是否能获得到读锁<br/>
+7.pthread_rwlock_trywrlock &mdash;>尝试是否能获得到写锁</p>
+
+<p>以下是测试的例子</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
+</span><span class='line'>#include &lt;stdlib.h&gt;
+</span><span class='line'>#include &lt;string.h&gt;
+</span><span class='line'>#include &lt;unistd.h&gt;
+</span><span class='line'>pthread_t id;
+</span><span class='line'>pthread_t id1;
+</span><span class='line'>pthread_rwlock_t _lock;
+</span><span class='line'>pthread_mutex_t mutex;
+</span><span class='line'>void ReadLog( void *ptr )
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    unsigned int pid = (unsigned int )ptr;
+</span><span class='line'>    printf("Thread %u lock--\n",pid);
+</span><span class='line'>    FILE* fp = fopen("log.txt","rb");
+</span><span class='line'>    if(fp)
+</span><span class='line'>    {
+</span><span class='line'>        fseek(fp,0,SEEK_END);
+</span><span class='line'>        int nlen = ftell(fp);
+</span><span class='line'>        fseek(fp,0,SEEK_SET);
+</span><span class='line'>        char* pData = new char[nlen+1];
+</span><span class='line'>        memset(pData,0,nlen+1);
+</span><span class='line'>        fread(pData,1,nlen,fp);
+</span><span class='line'>        fclose(fp);
+</span><span class='line'>        printf("%s",pData);
+</span><span class='line'>        delete [] pData;
+</span><span class='line'>    }
+</span><span class='line'>    sleep(2);
+</span><span class='line'>    printf("Thread %u unlock--\n",pid);
+</span><span class='line'>
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>void *rd_lock_thread( void* ptr )
+</span><span class='line'>{
+</span><span class='line'>    pthread_rwlock_rdlock( &_lock );
+</span><span class='line'>    printf("读锁,其他线程才可以进入\n");
+</span><span class='line'>    ReadLog( ptr );
+</span><span class='line'>    pthread_rwlock_unlock( &_lock );
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>void *rw_lock_thread( void* ptr )
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    pthread_rwlock_wrlock( &_lock );
+</span><span class='line'>    printf("写锁,只有该线程解锁 %u ,其他线程才可以进入\n",(unsigned int ) ptr );
+</span><span class='line'>    ReadLog( ptr );
+</span><span class='line'>    pthread_rwlock_unlock( &_lock );
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>void *mutex_thread(void *ptr)
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    pthread_mutex_lock(&mutex);
+</span><span class='line'>    printf("只有当 Thread %u 解锁,其他线程才可以进入--\n",(unsigned int ) ptr);
+</span><span class='line'>    ReadLog( ptr );
+</span><span class='line'>    pthread_mutex_unlock(&mutex);
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>int main(int argc, const char *argv[])
+</span><span class='line'>{
+</span><span class='line'>    int i,ret;
+</span><span class='line'>    printf("演示:mutex-互斥锁--\n");
+</span><span class='line'>    pthread_mutex_init( &mutex, NULL );
+</span><span class='line'>    ret=pthread_create(&id,NULL,mutex_thread,(void*)1);
+</span><span class='line'>    ret=pthread_create(&id1,NULL,mutex_thread,(void*)2);
+</span><span class='line'>    pthread_join(id,NULL);
+</span><span class='line'>    pthread_join(id1,NULL);
+</span><span class='line'>    pthread_mutex_destroy( &mutex );
+</span><span class='line'>    printf("-------------------------------------\n\n");
+</span><span class='line'>
+</span><span class='line'>    printf("演示:读写锁--读锁--\n");
+</span><span class='line'>    pthread_rwlock_init(&_lock,0);
+</span><span class='line'>    ret=pthread_create(&id,NULL,rd_lock_thread,(void*)1);
+</span><span class='line'>    ret=pthread_create(&id1,NULL,rd_lock_thread,(void*)2);
+</span><span class='line'>    pthread_join(id,NULL);
+</span><span class='line'>    pthread_join(id1,NULL);
+</span><span class='line'>    pthread_rwlock_destroy(&_lock);
+</span><span class='line'>    printf("-------------------------------------\n\n");
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    printf("演示:读写锁--写锁--\n");
+</span><span class='line'>    pthread_rwlock_init(&_lock,0);
+</span><span class='line'>    ret=pthread_create(&id,NULL,rw_lock_thread,(void*)1);
+</span><span class='line'>    ret=pthread_create(&id1,NULL,rw_lock_thread,(void*)2);
+</span><span class='line'>    pthread_join(id,NULL);
+</span><span class='line'>    pthread_join(id1,NULL);
+</span><span class='line'>    pthread_rwlock_destroy(&_lock);
+</span><span class='line'>
+</span><span class='line'>    return 0;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/../images/linux_lock/linux_lock_pic_1.png"><br/>
+<img src="/../images/linux_lock/linux_lock_pic_2.png"><br/>
+<img src="/../images/linux_lock/linux_lock_pic_3.png"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/03/jenkins-plugin-email-ext/">Jenkins_plugin_邮件通知</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-03T00:05:29+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>概述</h2>
+
+<p>使用jenkins持续编译程序后,可以发送编译的结果给特定的人员,以便邮件方式告知编译或测试结果
+jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,本文使用Email-ext plugin进行发送邮件</p>
+
+<h2>插件名称:</h2>
+
+<p><strong>Email-ext plugin</strong></p>
+
+<p>如果手工安装插件还需要安装 Token macro Plugin</p>
+
+<p>安装好插件后在jenkins->系统管理->系统配置里头就会看到<code>Extended E-email Notification</code>选项
+设置以下选项.就可以发送邮件</p>
+
+<p><img src="/../images/jenkins_plugin_email/jenkins_plugin_email_pic_1.png"></p>
+
+<h2>使用插件</h2>
+
+<p>在项目配置中选择<code>增加构建后操作步骤</code>&ndash;><code>E-email Notification</code>
+<img src="/../images/jenkins_plugin_email/jenkins_plugin_email_pic_2.png">
+当项目编译后.就会发送邮件到指定的用户</p>
+
+<h2>指定邮件模板</h2>
+
+<p>&#8220;`</p>
+
+<p>&#8220;`</p>
+
+<p>对邮件中字段详细说明待续再更新&mdash;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -372,7 +1044,8 @@
 <li class='category'><a href='/blog/categories/c/'>C (2)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
 <li class='category'><a href='/blog/categories/v8/'>V8 (1)</a></li>
-<li class='category'><a href='/blog/categories/ci/'>ci (2)</a></li>
+<li class='category'><a href='/blog/categories/ci/'>ci (3)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
  
 </ul> 
 </section>
@@ -381,23 +1054,23 @@
   <ul id="最新文章">
     
       <li class="post">
+        <a href="/blog/2014/06/30/linux-lock-package/">Linux_lock_package</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/29/linux-lock/">Linux_lock</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/03/jenkins-plugin-email-ext/">Jenkins_plugin_邮件通知</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti/">Authorized_keys权限导致登陆失败问题</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/">Linux 批量增加用户</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/10/v8-enginebian-yi/">V8 Engine编译</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/10/json2c-plus-plus2/">把json字符串转换成C++类对象(二)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/09/jsonzhuan-huan-lei-dui-xiang-c-plus-plus/">把json字符串转换成C++类对象(一)</a>
       </li>
     
   </ul>

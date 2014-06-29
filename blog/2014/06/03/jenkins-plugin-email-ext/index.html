@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Authorized_keys权限导致登陆失败问题 - 学海拾贝 Blog</title>
+  <title>Jenkins_plugin_邮件通知 - 学海拾贝 Blog</title>
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="概述 authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆. 经过测试免密码登陆CentOs Linux 6.5 &hellip;">
+  <meta name="description" content="概述 使用jenkins持续编译程序后,可以发送编译的结果给特定的人员,以便邮件方式告知编译或测试结果
+jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,本文使用Email-ext plugin进行发送邮件 插件名称: Email-ext plugin 如果手工安装插件还需要安装 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti">
+  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/06/03/jenkins-plugin-email-ext">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="学海拾贝 Blog" type="application/atom+xml">
@@ -61,7 +62,7 @@
   
   <header>
     
-      <h1 class="entry-title">Authorized_keys权限导致登陆失败问题</h1>
+      <h1 class="entry-title">Jenkins_plugin_邮件通知</h1>
     
     
       <p class="meta">
@@ -77,7 +78,7 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-06-03T00:05:29+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2014</time>
         
       </p>
     
@@ -86,26 +87,33 @@
 
 <div class="entry-content"><h2>概述</h2>
 
-<p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
+<p>使用jenkins持续编译程序后,可以发送编译的结果给特定的人员,以便邮件方式告知编译或测试结果
+jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,本文使用Email-ext plugin进行发送邮件</p>
 
-<p>经过测试免密码登陆<code>CentOs Linux 6.5 X64位</code>系统与<code>authorized_keys</code>文件权限有关系</p>
+<h2>插件名称:</h2>
 
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_1.png"><br/>
-有上图看出authorized_keys 权限是<code>-rw-rw-r-</code>
-即使把客户端的id_rsa.pub 保存到服务器的authorized_keys上也连接不了,需要把属性修改成<code>-rw-r--r--</code>或者<code>-rw------</code></p>
+<p><strong>Email-ext plugin</strong></p>
 
-<p>修改命令:</p>
+<p>如果手工安装插件还需要安装 Token macro Plugin</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 644 authorized_keys
-</span><span class='line'>或
-</span><span class='line'>chmod 600 authorized_keys</span></code></pre></td></tr></table></div></figure>
+<p>安装好插件后在jenkins->系统管理->系统配置里头就会看到<code>Extended E-email Notification</code>选项
+设置以下选项.就可以发送邮件</p>
 
+<p><img src="/../images/jenkins_plugin_email/jenkins_plugin_email_pic_1.png"></p>
 
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
-这样就可以连接上</p>
+<h2>使用插件</h2>
+
+<p>在项目配置中选择<code>增加构建后操作步骤</code>&ndash;><code>E-email Notification</code>
+<img src="/../images/jenkins_plugin_email/jenkins_plugin_email_pic_2.png">
+当项目编译后.就会发送邮件到指定的用户</p>
+
+<h2>指定邮件模板</h2>
+
+<p>&#8220;`</p>
+
+<p>&#8220;`</p>
+
+<p>对邮件中字段详细说明待续再更新&mdash;</p>
 </div>
 
 
@@ -128,12 +136,12 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-06-03T00:05:29+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/linux/'>Linux</a>
+    <a class='category' href='/blog/categories/ci/'>ci</a>
   
 </span>
 
@@ -149,10 +157,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/" title="Previous Post: linux 批量增加用户">&laquo; linux 批量增加用户</a>
+        <a class="basic-alignment left" href="/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti/" title="Previous Post: authorized_keys权限导致登陆失败问题">&laquo; authorized_keys权限导致登陆失败问题</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/06/03/jenkins-plugin-email-ext/" title="Next Post: jenkins_plugin_邮件通知">jenkins_plugin_邮件通知 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/06/29/linux-lock/" title="Next Post: linux_lock">linux_lock &raquo;</a>
       
     </p>
   </footer>
