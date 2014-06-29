@@ -3,7 +3,7 @@ layout: post
 title: "linux_lock"
 date: 2014-06-29 23:49:52 +0800
 comments: true
-categories: linux
+categories: Linux
 ---
 
 #Linux下互斥锁,读写锁区别

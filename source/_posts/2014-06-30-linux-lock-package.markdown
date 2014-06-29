@@ -3,7 +3,7 @@ layout: post
 title: "linux_lock_package"
 date: 2014-06-30 00:58:59 +0800
 comments: true
-categories: linux
+categories: Linux
 ---
 
 #读写锁,互斥锁封装
