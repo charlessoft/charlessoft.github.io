@@ -211,204 +211,361 @@
 <span class='line-number'>85</span>
 <span class='line-number'>86</span>
 <span class='line-number'>87</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#ifndef _OSSLATCH_HPP_
-</span><span class='line'>#define _OSSLATCH_HPP_
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#ifndef OSSLATCH_HPP__
+</span><span class='line'>#define OSSLATCH_HPP__
 </span><span class='line'>
-</span><span class='line'>#include &lt;pthread.h&gt;
-</span><span class='line'>enum OSS_LATCH_MODE
-</span><span class='line'>{
-</span><span class='line'>    SHARED,
-</span><span class='line'>    EXCLUSIVE
-</span><span class='line'>};
+</span><span class='line'>#include "core.hpp"
 </span><span class='line'>
+</span><span class='line'>#ifdef _WINDOWS
+</span><span class='line'>#define oss_mutex_t                       CRITICAL_SECTION
+</span><span class='line'>#define oss_mutex_init(__lock, __attribute)       InitializeCriticalSection( (__lock) )
+</span><span class='line'>#define oss_mutex_destroy             DeleteCriticalSection
+</span><span class='line'>#define oss_mutex_lock                    EnterCriticalSection
+</span><span class='line'>#define oss_mutex_trylock(__lock)     (TRUE == TryEnterCriticalSection( (__lock) ) )
+</span><span class='line'>#define oss_mutex_unlock              LeaveCriticalSection
 </span><span class='line'>
+</span><span class='line'>#define oss_rwlock_t                  SRWLOCK
+</span><span class='line'>#define oss_rwlock_init(__lock, __attribute)      InitializeSRWLock( (__lock) )
+</span><span class='line'>#define oss_rwlock_destroy(__lock)        (1) 
+</span><span class='line'>#define oss_rwlock_rdlock             AcquireSRWLockShared
+</span><span class='line'>#define oss_rwlock_rdunlock               ReleaseSRWLockShared
+</span><span class='line'>#define oss_rwlock_wrlock             AcquireSRWLockExclusive
+</span><span class='line'>#define oss_rwlock_wrunlock               ReleaseSRWLockExclusive
+</span><span class='line'>#define oss_rwlock_rdtrylock(__lock)  (false)
+</span><span class='line'>#define oss_rwlock_wrtrylock(__lock)  (false)
 </span><span class='line'>
-</span><span class='line'>class ossXLatch
-</span><span class='line'>{
-</span><span class='line'>private:
-</span><span class='line'>    pthread_mutex_t _lock;
-</span><span class='line'>public:
-</span><span class='line'>    ossXLatch()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_mutex_init ( &_lock, 0 );
-</span><span class='line'>    }
-</span><span class='line'>    ~ossXLatch()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_mutex_destroy( &_lock );
-</span><span class='line'>    }
+</span><span class='line'>#else
 </span><span class='line'>
-</span><span class='line'>    void get()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_mutex_lock( &_lock );
-</span><span class='line'>    }
+</span><span class='line'>#define oss_mutex_t                       pthread_mutex_t
+</span><span class='line'>#define oss_mutex_init                    pthread_mutex_init
+</span><span class='line'>#define oss_mutex_destroy             pthread_mutex_destroy
+</span><span class='line'>#define oss_mutex_lock                    pthread_mutex_lock
+</span><span class='line'>#define oss_mutex_trylock(__lock) (pthread_mutex_trylock( (__lock) ) == 0 )
+</span><span class='line'>#define oss_mutex_unlock              pthread_mutex_unlock
 </span><span class='line'>
-</span><span class='line'>    void release()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_mutex_unlock( &_lock );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    bool try_get()
-</span><span class='line'>    {
-</span><span class='line'>        return (pthread_mutex_trylock( &_lock ) == 0 );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>};
-</span><span class='line'>
-</span><span class='line'>class ossSLatch
-</span><span class='line'>{
-</span><span class='line'>private:
-</span><span class='line'>    pthread_rwlock_t _lock;
-</span><span class='line'>
-</span><span class='line'>public:
-</span><span class='line'>    ossSLatch()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_rwlock_init( &_lock, 0 );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    ~ossSLatch()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_rwlock_destroy( &_lock );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    void get()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_rwlock_wrlock( &_lock );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    void release()
-</span><span class='line'>    {
-</span><span class='line'>         pthread_rwlock_unlock( &_lock );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    bool try_get()
-</span><span class='line'>    {
-</span><span class='line'>        return ( pthread_rwlock_trywrlock( &_lock ) == 0);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    void get_shared()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_rwlock_rdlock( &_lock );
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    void release_shared()
-</span><span class='line'>    {
-</span><span class='line'>        pthread_rwlock_unlock( &_lock );
-</span><span class='line'>    }
-</span><span class='line'>};
+</span><span class='line'>#define oss_rwlock_t                  pthread_rwlock_t
+</span><span class='line'>#define oss_rwlock_init                   pthread_rwlock_init
+</span><span class='line'>#define oss_rwlock_destroy                pthread_rwlock_destroy
+</span><span class='line'>#define oss_rwlock_rdlock             pthread_rwlock_rdlock
+</span><span class='line'>#define oss_rwlock_rdunlock               pthread_rwlock_unlock
+</span><span class='line'>#define oss_rwlock_wrlock             pthread_rwlock_wrlock
+</span><span class='line'>#define oss_rwlock_wrunlock               pthread_rwlock_unlock
+</span><span class='line'>#define oss_rwlock_rdtrylock(__lock)  (pthread_rwlock_tryrdlock( (__lock) ) == 0 )
+</span><span class='line'>#define oss_rwlock_wrtrylock(__lock)  (pthread_rwlock_trywrlock ( ( __lock) ) == 0 )
 </span><span class='line'>
 </span><span class='line'>#endif
 </span><span class='line'>
+</span><span class='line'>enum OSS_LATCH_MODE
+</span><span class='line'>{
+</span><span class='line'>   SHARED ,
+</span><span class='line'>   EXCLUSIVE
+</span><span class='line'>} ;
+</span><span class='line'>
+</span><span class='line'>class ossXLatch
+</span><span class='line'>{
+</span><span class='line'>private :
+</span><span class='line'>   oss_mutex_t _lock ;
+</span><span class='line'>public :
+</span><span class='line'>   ossXLatch ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_mutex_init ( &_lock, 0 ) ;
+</span><span class='line'>   }
+</span><span class='line'>   ~ossXLatch ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_mutex_destroy(&_lock);
+</span><span class='line'>   }
+</span><span class='line'>   void get ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_mutex_lock(&_lock);
+</span><span class='line'>   }
+</span><span class='line'>   void release ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_mutex_unlock(&_lock);
+</span><span class='line'>   }
+</span><span class='line'>   bool try_get ()
+</span><span class='line'>   {
+</span><span class='line'>      return oss_mutex_trylock(&_lock);
+</span><span class='line'>   }
+</span><span class='line'>} ;
+</span><span class='line'>
+</span><span class='line'>class ossSLatch
+</span><span class='line'>{
+</span><span class='line'>private :
+</span><span class='line'>   oss_rwlock_t _lock ;
+</span><span class='line'>public :
+</span><span class='line'>   ossSLatch ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_rwlock_init ( &_lock, 0 ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   ~ossSLatch ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_rwlock_destroy ( &_lock ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   void get ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_rwlock_wrlock ( &_lock ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   void release ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_rwlock_wrunlock ( &_lock ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   bool try_get ()
+</span><span class='line'>   {
+</span><span class='line'>      return ( oss_rwlock_wrtrylock ( &_lock ) ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   void get_shared ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_rwlock_rdlock ( &_lock ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   void release_shared ()
+</span><span class='line'>   {
+</span><span class='line'>      oss_rwlock_rdunlock ( &_lock ) ;
+</span><span class='line'>   }
+</span><span class='line'>
+</span><span class='line'>   bool try_get_shared ()
+</span><span class='line'>   {
+</span><span class='line'>      return ( oss_rwlock_rdtrylock ( &_lock ) ) ;
+</span><span class='line'>   }
+</span><span class='line'>} ;
+</span><span class='line'>
+</span><span class='line'>#endif</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//调用
+</span><span class='line'>#include &lt;stdio.h&gt;
+</span><span class='line'>#include &lt;stdlib.h&gt;
+</span><span class='line'>#include &lt;string.h&gt;
+</span><span class='line'>#include "ossLatch.hpp"
+</span><span class='line'>#include   &lt;unistd.h&gt;
+</span><span class='line'>ossXLatch Mutex_lock;
+</span><span class='line'>ossSLatch Shared_lock;
+</span><span class='line'>pthread_t id;
+</span><span class='line'>pthread_t id1;
+</span><span class='line'>
+</span><span class='line'>void ReadLog( void *ptr )
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    unsigned int pid = (unsigned int )ptr;
+</span><span class='line'>    printf("Thread %u lock--\n",pid);
+</span><span class='line'>    FILE* fp = fopen("log.txt","rb");
+</span><span class='line'>    if(fp)
+</span><span class='line'>    {
+</span><span class='line'>        fseek(fp,0,SEEK_END);
+</span><span class='line'>        int nlen = ftell(fp);
+</span><span class='line'>        fseek(fp,0,SEEK_SET);
+</span><span class='line'>        char* pData = new char[nlen+1];
+</span><span class='line'>        memset(pData,0,nlen+1);
+</span><span class='line'>        fread(pData,1,nlen,fp);
+</span><span class='line'>        fclose(fp);
+</span><span class='line'>        printf("%s",pData);
+</span><span class='line'>        delete [] pData;
+</span><span class='line'>    }
+</span><span class='line'>    sleep(2);
+</span><span class='line'>    printf("Thread %u unlock--\n",pid);
+</span><span class='line'>
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>void *rd_lock_thread( void* ptr )
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    Shared_lock.get_shared();
+</span><span class='line'>    printf("读锁,其他线程才可以进入\n");
+</span><span class='line'>    ReadLog( ptr );
+</span><span class='line'>    Shared_lock.release();
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>void *rw_lock_thread( void* ptr )
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    Shared_lock.get();
+</span><span class='line'>    printf("写锁,只有该线程解锁 %u ,其他线程才可以进入\n",(unsigned int ) ptr );
+</span><span class='line'>    ReadLog( ptr );
+</span><span class='line'>    Shared_lock.release();
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>void *mutex_thread(void *ptr)
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    Mutex_lock.get();
+</span><span class='line'>    printf("只有当 Thread %u 解锁,其他线程才可以进入--\n",(unsigned int ) ptr);
+</span><span class='line'>    ReadLog( ptr );
+</span><span class='line'>    Mutex_lock.release();
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>int main(int argc, const char *argv[])
+</span><span class='line'>{
+</span><span class='line'>    int i,ret;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    printf("演示:mutex-互斥锁--\n");
+</span><span class='line'>    ret=pthread_create(&id,NULL,mutex_thread,(void*)1);
+</span><span class='line'>    ret=pthread_create(&id1,NULL,mutex_thread,(void*)2);
+</span><span class='line'>    pthread_join(id,NULL);
+</span><span class='line'>    pthread_join(id1,NULL);
+</span><span class='line'>    printf("-------------------------------------\n\n");
+</span><span class='line'>
+</span><span class='line'>    printf("演示:读写锁--读锁--\n");
+</span><span class='line'>    ret=pthread_create(&id,NULL,rd_lock_thread,(void*)1);
+</span><span class='line'>    ret=pthread_create(&id1,NULL,rd_lock_thread,(void*)2);
+</span><span class='line'>    pthread_join(id,NULL);
+</span><span class='line'>    pthread_join(id1,NULL);
+</span><span class='line'>
+</span><span class='line'>    printf("-------------------------------------\n\n");
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    printf("演示:读写锁--写锁--\n");
+</span><span class='line'>    ret=pthread_create(&id,NULL,rw_lock_thread,(void*)1);
+</span><span class='line'>    ret=pthread_create(&id1,NULL,rw_lock_thread,(void*)2);
+</span><span class='line'>    pthread_join(id,NULL);
+</span><span class='line'>    pthread_join(id1,NULL);
+</span><span class='line'>
+</span><span class='line'>    return 0;
+</span><span class='line'>}
+</span><span class='line'>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>//调用</p>
-
-<h1>include &lt;stdio.h></h1>
-
-<h1>include &lt;stdlib.h></h1>
-
-<h1>include &lt;string.h></h1>
-
-<h1>include &ldquo;ossLatch.hpp&rdquo;</h1>
-
-<h1>include   &lt;unistd.h></h1>
-
-<p>ossXLatch Mutex_lock;
-ossSLatch Shared_lock;
-pthread_t id;
-pthread_t id1;</p>
-
-<p>void ReadLog( void *ptr )
-{</p>
-
-<pre><code>unsigned int pid = (unsigned int )ptr;
-printf("Thread %u lock--\n",pid);
-FILE* fp = fopen("log.txt","rb");
-if(fp)
-{
-    fseek(fp,0,SEEK_END);
-    int nlen = ftell(fp);
-    fseek(fp,0,SEEK_SET);
-    char* pData = new char[nlen+1];
-    memset(pData,0,nlen+1);
-    fread(pData,1,nlen,fp);
-    fclose(fp);
-    printf("%s",pData);
-    delete [] pData;
-}
-sleep(2);
-printf("Thread %u unlock--\n",pid);
-</code></pre>
-
-<p>}</p>
-
-<p>void <em>rd_lock_thread( void</em> ptr )
-{</p>
-
-<pre><code>Shared_lock.get_shared();
-printf("读锁,其他线程才可以进入\n");
-ReadLog( ptr );
-Shared_lock.release();
-</code></pre>
-
-<p>}</p>
-
-<p>void <em>rw_lock_thread( void</em> ptr )
-{</p>
-
-<pre><code>Shared_lock.get();
-printf("写锁,只有该线程解锁 %u ,其他线程才可以进入\n",(unsigned int ) ptr );
-ReadLog( ptr );
-Shared_lock.release();
-</code></pre>
-
-<p>}</p>
-
-<p>void <em>mutex_thread(void </em>ptr)
-{</p>
-
-<pre><code>Mutex_lock.get();
-printf("只有当 Thread %u 解锁,其他线程才可以进入--\n",(unsigned int ) ptr);
-ReadLog( ptr );
-Mutex_lock.release();
-</code></pre>
-
-<p>}</p>
-
-<p>int main(int argc, const char *argv[])
-{</p>
-
-<pre><code>int i,ret;
-
-
-printf("演示:mutex-互斥锁--\n");
-ret=pthread_create(&amp;id,NULL,mutex_thread,(void*)1);
-ret=pthread_create(&amp;id1,NULL,mutex_thread,(void*)2);
-pthread_join(id,NULL);
-pthread_join(id1,NULL);
-printf("-------------------------------------\n\n");
-
-printf("演示:读写锁--读锁--\n");
-ret=pthread_create(&amp;id,NULL,rd_lock_thread,(void*)1);
-ret=pthread_create(&amp;id1,NULL,rd_lock_thread,(void*)2);
-pthread_join(id,NULL);
-pthread_join(id1,NULL);
-
-printf("-------------------------------------\n\n");
-
-
-printf("演示:读写锁--写锁--\n");
-ret=pthread_create(&amp;id,NULL,rw_lock_thread,(void*)1);
-ret=pthread_create(&amp;id1,NULL,rw_lock_thread,(void*)2);
-pthread_join(id,NULL);
-pthread_join(id1,NULL);
-
-return 0;
-</code></pre>
-
-<p>}</p>
-
-<p>&#8220;`</p>
 </div>
   
   
