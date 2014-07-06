@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Authorized_keys权限导致登陆失败问题 - 学海拾贝 Blog</title>
+  <title>Git远程分支 - 学海拾贝 Blog</title>
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="概述 authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆. 经过测试免密码登陆CentOs Linux 6.5 &hellip;">
+  <meta name="description" content="git 远程分支命令 git 版本控制管理工具,比较强大,刚开始用的时候感觉不适应,特别是很多命令行,分支等等,感觉和svn比起来,还是svn用的比较舒服,但是用久了git,就会发觉git的强大,git采用分布式版本库做法,不需要服务器端软件,只要安装了git本地就可以运作版本控制, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti">
+  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/07/01/gityuan-cheng-fen-zhi">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="学海拾贝 Blog" type="application/atom+xml">
@@ -61,7 +61,7 @@
   
   <header>
     
-      <h1 class="entry-title">Authorized_keys权限导致登陆失败问题</h1>
+      <h1 class="entry-title">Git远程分支</h1>
     
     
       <p class="meta">
@@ -77,35 +77,32 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-07-01T23:10:10+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h2>概述</h2>
+<div class="entry-content"><h1>git 远程分支命令</h1>
 
-<p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
+<p>git 版本控制管理工具,比较强大,刚开始用的时候感觉不适应,特别是很多命令行,分支等等,感觉和svn比起来,还是svn用的比较舒服,但是用久了git,就会发觉git的强大,git采用分布式版本库做法,不需要服务器端软件,只要安装了git本地就可以运作版本控制,网上有很多git和svn对比,这里就不列举了,这里只列一下自己感受比svn好的地方.</p>
 
-<p>经过测试免密码登陆<code>CentOs Linux 6.5 X64位</code>系统与<code>authorized_keys</code>文件权限有关系</p>
+<p>1.随时提交代码到本地版本库,特别适合没网络的环境.<br/>
+2.git 切换分支很方便,个人感觉比svn强大很多.<br/>
+git 可以在同一个目录下随时切换分支,svn(好像不行).</p>
 
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_1.png"><br/>
-有上图看出authorized_keys 权限是<code>-rw-rw-r-</code>
-即使把客户端的id_rsa.pub 保存到服务器的authorized_keys上也连接不了,需要把属性修改成<code>-rw-r--r--</code>或者<code>-rw------</code></p>
+<p>以下列举下git一些分支命令<br/>
+<code>git checkout -b dev1</code> &mdash;>新生成分支并且切换到dev1分支<br/>
+<code>git push origin dev1</code> &mdash;>上传到远程分支<br/>
+<code>git checkout -b dev1 origin/dev1</code> &mdash;>下载远程分支</p>
 
-<p>修改命令:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 644 authorized_keys
-</span><span class='line'>或
-</span><span class='line'>chmod 600 authorized_keys</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
-这样就可以连接上</p>
+<p>git 常用命令
+<code>git init</code> &mdash;>初始化版本库
+<code>git add -u</code> &mdash;>增加更新的文件到版本中
+<code>git commit -m "log 内容"</code> &mdash;>提交到版本库
+<code>git push origin master</code> &mdash;>更新到远程主干中
+<code>git reset --hard</code> &mdash;>彻底回退到某个版本，本地的源码也会变为上一个版本的内容</p>
 </div>
 
 
@@ -128,12 +125,12 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-07-01T23:10:10+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/linux/'>Linux</a>
+    <a class='category' href='/blog/categories/git/'>git</a>
   
 </span>
 
@@ -149,10 +146,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/" title="Previous Post: linux 批量增加用户">&laquo; linux 批量增加用户</a>
+        <a class="basic-alignment left" href="/blog/2014/06/30/linux-lock-package/" title="Previous Post: linux_lock_package">&laquo; linux_lock_package</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/06/03/jenkins-plugin-email-ext/" title="Next Post: jenkins_plugin_邮件通知">jenkins_plugin_邮件通知 &raquo;</a>
       
     </p>
   </footer>

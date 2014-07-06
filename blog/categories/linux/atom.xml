@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | 学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-06-30T01:13:19+08:00</updated>
+  <updated>2014-07-06T09:24:09+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -348,7 +348,7 @@ return 0;
 3.pthread_mutex_lock &mdash;>加锁<br/>
 4.pthread_mutex_unlock &mdash;>解锁</p>
 
-<p>读写锁 比mutex有更高的适用性，可以多个线程同时占用读模式的读写锁，但是只能一个线程占用写模式的读写锁。<br/>
+<p><code>读写锁</code> 比mutex有更高的适用性，可以多个线程同时占用读模式的读写锁，但是只能一个线程占用写模式的读写锁。<br/>
 当读写锁是读加锁状态,所有以读模式对它进行加锁的线程都可以获得到访问权,但是以写模式对它加锁的线程将阻塞<br/>
 当读写锁是写加锁状态,所以对该资源进行操作的线程都会阻塞,直到该锁解锁.<br/>
 读写锁函数<br/>

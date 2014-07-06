@@ -99,7 +99,7 @@
 3.pthread_mutex_lock &mdash;>加锁<br/>
 4.pthread_mutex_unlock &mdash;>解锁</p>
 
-<p>读写锁 比mutex有更高的适用性，可以多个线程同时占用读模式的读写锁，但是只能一个线程占用写模式的读写锁。<br/>
+<p><code>读写锁</code> 比mutex有更高的适用性，可以多个线程同时占用读模式的读写锁，但是只能一个线程占用写模式的读写锁。<br/>
 当读写锁是读加锁状态,所有以读模式对它进行加锁的线程都可以获得到访问权,但是以写模式对它加锁的线程将阻塞<br/>
 当读写锁是写加锁状态,所以对该资源进行操作的线程都会阻塞,直到该锁解锁.<br/>
 读写锁函数<br/>
@@ -388,12 +388,17 @@ var duoshuoQuery = {short_name:"charlessoft"};
 <li class='category'><a href='/blog/categories/linux/'>Linux (3)</a></li>
 <li class='category'><a href='/blog/categories/v8/'>V8 (1)</a></li>
 <li class='category'><a href='/blog/categories/ci/'>ci (3)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
  
 </ul> 
 </section>
 <section>
   <h1>近期文章</h1>
   <ul id="最新文章">
+    
+      <li class="post">
+        <a href="/blog/2014/07/01/gityuan-cheng-fen-zhi/">Git远程分支</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/30/linux-lock-package/">Linux_lock_package</a>
@@ -409,10 +414,6 @@ var duoshuoQuery = {short_name:"charlessoft"};
     
       <li class="post">
         <a href="/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti/">Authorized_keys权限导致登陆失败问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/">Linux 批量增加用户</a>
       </li>
     
   </ul>
