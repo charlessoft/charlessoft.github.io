@@ -20,12 +20,12 @@ git 可以在同一个目录下随时切换分支,svn(好像不行).
 `git checkout -b dev1 origin/dev1` -->下载远程分支  
 
 
-git 常用命令
-`git init` -->初始化版本库
-`git add -u` -->增加更新的文件到版本中
-`git commit -m "log 内容"` -->提交到版本库
-`git push origin master` -->更新到远程主干中
-`git reset --hard` -->彻底回退到某个版本，本地的源码也会变为上一个版本的内容
-
+git 常用命令  
+`git init` -->初始化版本库  
+`git add -u` -->增加更新的文件到版本中  
+`git commit -m "log 内容"` -->提交到版本库  
+`git push origin master` -->更新到远程主干中  
+`git reset --hard` -->彻底回退到某个版本，本地的源码也会变为上一个版本的内容  
+  
 
 
