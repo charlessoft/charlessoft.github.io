@@ -25,7 +25,12 @@ git 常用命令
 `git add -u` -->增加更新的文件到版本中  
 `git commit -m "log 内容"` -->提交到版本库  
 `git push origin master` -->更新到远程主干中  
-`git reset --hard` -->彻底回退到某个版本，本地的源码也会变为上一个版本的内容  
+`git reset --hard commit_id` -->彻底回退到某个版本，本地的源码也会变为上一个版本的内容    
+`git reset --mixed commit_id` -->回退到指定的commit_id,保留修改后的源码,可以使用`git add -u`和`git commit -m"xxx"`提交到版本库  
+`git reset --soft commit_id` -->会退到指定的commit_id,只回退了commit信息,可以使用`git commit -m"xxx"`再次提交  
+`强制提交到远程版本库`->有时候需要删除远程版本库中前几次提交,可以使用命令  
+`git reset --hard commit_id`然后使用`git push origin HEAD --force`  
   
-
-
+    
+  
+  
