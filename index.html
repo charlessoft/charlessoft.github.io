@@ -109,7 +109,8 @@ git 可以在同一个目录下随时切换分支,svn(好像不行).</p>
 <code>git reset --mixed commit_id</code> &mdash;>回退到指定的commit_id,保留修改后的源码,可以使用<code>git add -u</code>和<code>git commit -m"xxx"</code>提交到版本库<br/>
 <code>git reset --soft commit_id</code> &mdash;>会退到指定的commit_id,只回退了commit信息,可以使用<code>git commit -m"xxx"</code>再次提交<br/>
 <code>强制提交到远程版本库</code>&ndash;>有时候需要删除远程版本库中前几次提交,可以使用命令<br/>
-<code>git reset --hard commit_id</code>然后使用<code>git push origin HEAD --force</code></p>
+<code>git reset --hard commit_id</code>然后使用<code>git push origin HEAD --force</code><br/>
+<code>git tag v0.1</code>&ndash;>打标签,push 到远程上需要用<code>git push origin tag v0.1</code></p>
 </div>
   
   
