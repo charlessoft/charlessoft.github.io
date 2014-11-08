@@ -31,6 +31,7 @@ git 常用命令
 `强制提交到远程版本库`->有时候需要删除远程版本库中前几次提交,可以使用命令  
 `git reset --hard commit_id`然后使用`git push origin HEAD --force`  
 `git tag v0.1 `->打标签,push 到远程上需要用`git push origin tag v0.1`
+`git diff --name-status xxx yyy `->对比两个日志,生成有修改的文件名
   
     
   
