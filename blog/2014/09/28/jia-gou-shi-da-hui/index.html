@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>架构师大会 - 学海拾贝 Blog</title>
+  <meta name="author" content="charlessoft">
+
+  
+  <meta name="description" content="概述
+玩转自动化运维
+体会 概述 有幸参加了2014年架构师大会，主题很丰富，演讲者从主流的技术上分享了各自的心得，
+虽然之前在出差时也经常去参加一些免费的技术沙龙，这次的架构师大会，让我们屌丝程序员眼前一亮，见识到了什么是架构师盛宴。 运维工具名词 Pupplet
+Chef
+Ansible &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/09/28/jia-gou-shi-da-hui">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="学海拾贝 Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">学海拾贝 Blog</a></h1>
+  
+    <h2>喜欢学习.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">架构师大会</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-28T15:10:48+08:00" pubdate data-updated="true">Sep 28<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>概述<br/>
+玩转自动化运维
+体会</p>
+
+<h2>概述</h2>
+
+<p>有幸参加了2014年架构师大会，主题很丰富，演讲者从主流的技术上分享了各自的心得，
+虽然之前在出差时也经常去参加一些免费的技术沙龙，这次的架构师大会，让我们屌丝程序员眼前一亮，见识到了什么是架构师盛宴。</p>
+
+<h2>运维工具名词</h2>
+
+<p>Pupplet<br/>
+Chef<br/>
+Ansible<br/>
+Saltstack<br/>
+系统工具<br/>
+bash<br/>
+awk<br/>
+sed</p>
+
+<h2>玩转自动化运维心得</h2>
+
+<p>传统的几台服务器到几千台服务器，你还在一台一台的部署吗，那你就out了。。
+在大数据时代，需要高效的程序员，一边喝咖啡，一边等待自动安装部署，而不是天天都在焦头烂额的敲重复的代码，
+YUPUN公司的运维总监分享了他一些心得，介绍了常见的运维工具和系统自带的工具配合使用，公司只有4个运维，却能管理几千台机器，游刃有余， 面对临时需要修改一些策略需要重新发布，也完全木有问题。</p>
+
+<p>以下结合前段时间做的自动化测试和自动化运维会议，分享一些自己体会
+主要的体会就是能解放双手的，都让机器来解决。</p>
+
+<p>1、像程序员一样思考问题
+作为一名优秀运维工程师，需要了解多种语言，多种脚本，拒绝重复的劳动，创造性地解决问题，从而构建美妙的运维脚本。
+自动化运维工程师，在每次登录多台服务器，做同样操作的时候，就应该考虑到能否编写小程序来解放双手，解放劳动力,而不是觉得远程登录敲下命令解决问题就放置不管了，
+长期积累下来，苦逼的必须程序员自己啊~ , 重复的手工操作还容易产生错误，几千台机器有问题让你想死的心都有，机器能做的事情就应该让机器去做，教会机器做跟多低层次，机器比手工做的更好,节约运维人员时间学习更多的知识。</p>
+
+<p><img src="/../images/jiagoushidahui/01.png"></p>
+
+<p>程序生成程序
+对于一些修改配置，例如前段时间做的master/slave(一台服务器多台主机)关联，
+以下是3种做法：</p>
+
+<p><img src="/../images/jiagoushidahui/02.png"></p>
+
+<p>图1: 比较方便，对于新增加的机器，就直接在复制一个节点内容就直接可以运行了。</p>
+
+<p><img src="/../images/jiagoushidahui/03.png"></p>
+
+<p>图2：对比图1，提取成函数，对于新增加的节点只要调用复制函数。</p>
+
+<p><img src="/../images/jiagoushidahui/04.png"></p>
+
+<p>图3：对比图2，生成脚本程序，实际上是生成图2的内容，</p>
+
+<blockquote><p>3种做法对比，<br/>
+方法1：比较粗暴，比较容易完成任务，但是对于后期维护，需要做大量修改；<br/>
+方法2：对方法1，提取函数，但是对于后期维护，例如一些slave已经执行过的脚本不需要执行，就需要做修改；<br/>
+方法3：做法有时候比较繁琐，例如一些环境变量输出可能要走一些弯路，但是对于生成的脚本程序可以进行二次开发，有利维护。</p></blockquote>
+
+<h2>监控状态图，性能可视化</h2>
+
+<p>作为运维工程师，大部分时候会面对一些系统日志或者系统监控数据，如何快速从海量的数据中提取对我们有帮助数据，这就需要运维工程师会熟练系统的命令以及第三方工具，以图表的方式展示出来， 能直观的展示结果。</p>
+
+<p>原始数据:</p>
+
+<p><img src="/../images/jiagoushidahui/05.png"></p>
+
+<p>第三方程序加工后的展示图：</p>
+
+<p><img src="/../images/jiagoushidahui/06.png"></p>
+
+<p>这样生成的结果清晰明了，对后期做数据展示图对比，就容易发现问题所在。</p>
+
+<h2>结束</h2>
+
+<p>不仅仅运维要自动化，在计算机能做的事情中，很多都可以自动化，自动化运维，自动化测试，自动化生成工具，
+再完成自动化过程中，学习的道路是曲折的，涉及的方面也很广，网络、存储、系统、数据库、监控、安全、备份、排障、调优等 等我们学会。就会觉得俺们都是全栈工程师了。用福州话来说，叫牙霸</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">charlessoft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-28T15:10:48+08:00" pubdate data-updated="true">Sep 28<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/09/23/fuse/" title="Previous Post: FUSE">&laquo; FUSE</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/10/01/vim-plugin/" title="Next Post: vim_plugin">vim_plugin &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  
+<section>  
+<h1>Comments</h1>  
+<div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="请将此处替换成文章在你的站点中的ID" data-title="请替换成文章的标题" data-url="请替换成文章的网址"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"charlessoft"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+</section>  
+ 
+</div>
+
+<aside class="sidebar">
+  
+    <section> 
+<h1>文章分类</h1> 
+<ul id="categories"> 
+<li class='category'><a href='/blog/categories/c/'>C (2)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>Linux (3)</a></li>
+<li class='category'><a href='/blog/categories/v8/'>V8 (1)</a></li>
+<li class='category'><a href='/blog/categories/ci/'>ci (3)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
+ 
+</ul> 
+</section>
+<section>
+  <h1>近期文章</h1>
+  <ul id="最新文章">
+    
+      <li class="post">
+        <a href="/blog/2014/10/03/shell-code/">Shell_code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/01/vim-plugin/">Vim_plugin</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/28/jia-gou-shi-da-hui/">架构师大会</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/23/fuse/">FUSE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/22/jmeter/">Jmeter</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - charlessoft -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

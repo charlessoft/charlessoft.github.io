@@ -5,11 +5,41 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Authorized_keys权限导致登陆失败问题 - 学海拾贝 Blog</title>
+  <title>Shell_code - 学海拾贝 Blog</title>
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="概述 authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆. 经过测试免密码登陆CentOs Linux 6.5 &hellip;">
+  <meta name="description" content="一些shell code shell判断文件,目录是否存在或者具有权限 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+NovaPath=”/var/log/httpd/” &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +48,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti">
+  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/10/03/shell-code">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="学海拾贝 Blog" type="application/atom+xml">
@@ -61,7 +91,7 @@
   
   <header>
     
-      <h1 class="entry-title">Authorized_keys权限导致登陆失败问题</h1>
+      <h1 class="entry-title">Shell_code</h1>
     
     
       <p class="meta">
@@ -77,35 +107,98 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-10-03T15:40:05+08:00" pubdate data-updated="true">Oct 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h2>概述</h2>
+<div class="entry-content"><h1>一些shell code</h1>
 
-<p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
-
-<p>经过测试免密码登陆<code>CentOs Linux 6.5 X64位</code>系统与<code>authorized_keys</code>文件权限有关系</p>
-
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_1.png"><br/>
-有上图看出authorized_keys 权限是<code>-rw-rw-r-</code>
-即使把客户端的id_rsa.pub 保存到服务器的authorized_keys上也连接不了,需要把属性修改成<code>-rw-r--r--</code>或者<code>-rw------</code></p>
-
-<p>修改命令:</p>
+<p>shell判断文件,目录是否存在或者具有权限</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 644 authorized_keys
-</span><span class='line'>或
-</span><span class='line'>chmod 600 authorized_keys</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NovaPath=”/var/log/httpd/”
+</span><span class='line'>NovaFile=”/var /log/httpd/access.log”
+</span><span class='line'>
+</span><span class='line'>#这里的-x 参数判断$NovaPath是否存在并且是否具有可执行权限
+</span><span class='line'>if [ ! -x "$NovaPath"]; then
+</span><span class='line'>    mkdir “$NovaPath”
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#这里的-d 参数判断$NovaPath是否存在
+</span><span class='line'>if [ ! -d "$NovaPath"]; then
+</span><span class='line'>    mkdir “$NovaPath”
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#这里的-f参数判断$NovaFile是否存在
+</span><span class='line'>if [ ! -f "$NovaFile" ]; then
+</span><span class='line'>    touch “$NovaFile”
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#其他参数还有-n,-n是判断一个变量是否是否有值
+</span><span class='line'>if [ ! -n "$NovaVar" ]; then
+</span><span class='line'>    echo “$NovaVar is empty”
+</span><span class='line'>    exit 0
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#两个变量判断是否相等
+</span><span class='line'>if [ "$var1" = "$var2" ]; then
+</span><span class='line'>    echo ‘$var1 eq $var2′
+</span><span class='line'>else
+</span><span class='line'>    echo ‘$var1 not eq $var2′
+</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
-这样就可以连接上</p>
+<p>数字判断</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NUM=5
+</span><span class='line'>DEFINE=10 
+</span><span class='line'>if [ $NUM -ge $DEFINE ]; then \
+</span><span class='line'>    echo $NUM
+</span><span class='line'>else
+</span><span class='line'>    echo $DEFINE 
+</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
+
+
+
 </div>
 
 
@@ -128,14 +221,8 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-10-03T15:40:05+08:00" pubdate data-updated="true">Oct 3<span>rd</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/linux/'>Linux</a>
-  
-</span>
 
 
     </p>
@@ -149,10 +236,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/" title="Previous Post: linux 批量增加用户">&laquo; linux 批量增加用户</a>
+        <a class="basic-alignment left" href="/blog/2014/10/01/vim-plugin/" title="Previous Post: vim_plugin">&laquo; vim_plugin</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/06/03/jenkins-plugin-email-ext/" title="Next Post: jenkins_plugin_邮件通知">jenkins_plugin_邮件通知 &raquo;</a>
       
     </p>
   </footer>

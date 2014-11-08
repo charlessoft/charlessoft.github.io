@@ -4,7 +4,7 @@
   <title><![CDATA[学海拾贝 Blog]]></title>
   <link href="http://charlessoft.github.io/atom.xml" rel="self"/>
   <link href="http://charlessoft.github.io/"/>
-  <updated>2014-09-18T00:45:01+08:00</updated>
+  <updated>2014-10-11T15:33:58+08:00</updated>
   <id>http://charlessoft.github.io/</id>
   <author>
     <name><![CDATA[charlessoft]]></name>
@@ -12,6 +12,477 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Shell_code]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/10/03/shell-code/"/>
+    <updated>2014-10-03T15:40:05+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/10/03/shell-code</id>
+    <content type="html"><![CDATA[<h1>一些shell code</h1>
+
+<p>shell判断文件,目录是否存在或者具有权限</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NovaPath=”/var/log/httpd/”
+</span><span class='line'>NovaFile=”/var /log/httpd/access.log”
+</span><span class='line'>
+</span><span class='line'>#这里的-x 参数判断$NovaPath是否存在并且是否具有可执行权限
+</span><span class='line'>if [ ! -x "$NovaPath"]; then
+</span><span class='line'>    mkdir “$NovaPath”
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#这里的-d 参数判断$NovaPath是否存在
+</span><span class='line'>if [ ! -d "$NovaPath"]; then
+</span><span class='line'>    mkdir “$NovaPath”
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#这里的-f参数判断$NovaFile是否存在
+</span><span class='line'>if [ ! -f "$NovaFile" ]; then
+</span><span class='line'>    touch “$NovaFile”
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#其他参数还有-n,-n是判断一个变量是否是否有值
+</span><span class='line'>if [ ! -n "$NovaVar" ]; then
+</span><span class='line'>    echo “$NovaVar is empty”
+</span><span class='line'>    exit 0
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>#两个变量判断是否相等
+</span><span class='line'>if [ "$var1" = "$var2" ]; then
+</span><span class='line'>    echo ‘$var1 eq $var2′
+</span><span class='line'>else
+</span><span class='line'>    echo ‘$var1 not eq $var2′
+</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>数字判断</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NUM=5
+</span><span class='line'>DEFINE=10 
+</span><span class='line'>if [ $NUM -ge $DEFINE ]; then \
+</span><span class='line'>    echo $NUM
+</span><span class='line'>else
+</span><span class='line'>    echo $DEFINE 
+</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vim_plugin]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/10/01/vim-plugin/"/>
+    <updated>2014-10-01T22:48:02+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/10/01/vim-plugin</id>
+    <content type="html"><![CDATA[<h1>vim plugin</h1>
+
+<p>1.vim-expand-region
+2.yankring
+3.zencoding
+4.ack
+5.ctrlp
+6.vim-markdown</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[架构师大会]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/09/28/jia-gou-shi-da-hui/"/>
+    <updated>2014-09-28T15:10:48+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/09/28/jia-gou-shi-da-hui</id>
+    <content type="html"><![CDATA[<p>概述<br/>
+玩转自动化运维
+体会</p>
+
+<h2>概述</h2>
+
+<p>有幸参加了2014年架构师大会，主题很丰富，演讲者从主流的技术上分享了各自的心得，
+虽然之前在出差时也经常去参加一些免费的技术沙龙，这次的架构师大会，让我们屌丝程序员眼前一亮，见识到了什么是架构师盛宴。</p>
+
+<h2>运维工具名词</h2>
+
+<p>Pupplet<br/>
+Chef<br/>
+Ansible<br/>
+Saltstack<br/>
+系统工具<br/>
+bash<br/>
+awk<br/>
+sed</p>
+
+<h2>玩转自动化运维心得</h2>
+
+<p>传统的几台服务器到几千台服务器，你还在一台一台的部署吗，那你就out了。。
+在大数据时代，需要高效的程序员，一边喝咖啡，一边等待自动安装部署，而不是天天都在焦头烂额的敲重复的代码，
+YUPUN公司的运维总监分享了他一些心得，介绍了常见的运维工具和系统自带的工具配合使用，公司只有4个运维，却能管理几千台机器，游刃有余， 面对临时需要修改一些策略需要重新发布，也完全木有问题。</p>
+
+<p>以下结合前段时间做的自动化测试和自动化运维会议，分享一些自己体会
+主要的体会就是能解放双手的，都让机器来解决。</p>
+
+<p>1、像程序员一样思考问题
+作为一名优秀运维工程师，需要了解多种语言，多种脚本，拒绝重复的劳动，创造性地解决问题，从而构建美妙的运维脚本。
+自动化运维工程师，在每次登录多台服务器，做同样操作的时候，就应该考虑到能否编写小程序来解放双手，解放劳动力,而不是觉得远程登录敲下命令解决问题就放置不管了，
+长期积累下来，苦逼的必须程序员自己啊~ , 重复的手工操作还容易产生错误，几千台机器有问题让你想死的心都有，机器能做的事情就应该让机器去做，教会机器做跟多低层次，机器比手工做的更好,节约运维人员时间学习更多的知识。</p>
+
+<p><img src="http://charlessoft.github.io/../images/jiagoushidahui/01.png"></p>
+
+<p>程序生成程序
+对于一些修改配置，例如前段时间做的master/slave(一台服务器多台主机)关联，
+以下是3种做法：</p>
+
+<p><img src="http://charlessoft.github.io/../images/jiagoushidahui/02.png"></p>
+
+<p>图1: 比较方便，对于新增加的机器，就直接在复制一个节点内容就直接可以运行了。</p>
+
+<p><img src="http://charlessoft.github.io/../images/jiagoushidahui/03.png"></p>
+
+<p>图2：对比图1，提取成函数，对于新增加的节点只要调用复制函数。</p>
+
+<p><img src="http://charlessoft.github.io/../images/jiagoushidahui/04.png"></p>
+
+<p>图3：对比图2，生成脚本程序，实际上是生成图2的内容，</p>
+
+<blockquote><p>3种做法对比，<br/>
+方法1：比较粗暴，比较容易完成任务，但是对于后期维护，需要做大量修改；<br/>
+方法2：对方法1，提取函数，但是对于后期维护，例如一些slave已经执行过的脚本不需要执行，就需要做修改；<br/>
+方法3：做法有时候比较繁琐，例如一些环境变量输出可能要走一些弯路，但是对于生成的脚本程序可以进行二次开发，有利维护。</p></blockquote>
+
+<h2>监控状态图，性能可视化</h2>
+
+<p>作为运维工程师，大部分时候会面对一些系统日志或者系统监控数据，如何快速从海量的数据中提取对我们有帮助数据，这就需要运维工程师会熟练系统的命令以及第三方工具，以图表的方式展示出来， 能直观的展示结果。</p>
+
+<p>原始数据:</p>
+
+<p><img src="http://charlessoft.github.io/../images/jiagoushidahui/05.png"></p>
+
+<p>第三方程序加工后的展示图：</p>
+
+<p><img src="http://charlessoft.github.io/../images/jiagoushidahui/06.png"></p>
+
+<p>这样生成的结果清晰明了，对后期做数据展示图对比，就容易发现问题所在。</p>
+
+<h2>结束</h2>
+
+<p>不仅仅运维要自动化，在计算机能做的事情中，很多都可以自动化，自动化运维，自动化测试，自动化生成工具，
+再完成自动化过程中，学习的道路是曲折的，涉及的方面也很广，网络、存储、系统、数据库、监控、安全、备份、排障、调优等 等我们学会。就会觉得俺们都是全栈工程师了。用福州话来说，叫牙霸</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FUSE]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/09/23/fuse/"/>
+    <updated>2014-09-23T11:04:00+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/09/23/fuse</id>
+    <content type="html"><![CDATA[<h2>目录</h2>
+
+<ol>
+<li>概述</li>
+<li>FUSE模块</li>
+<li>安装部署</li>
+<li>demo
+4.1 c/c++</li>
+<li>参考资料<br/>
+5.1 需要实现的函数列表<br/>
+5.2 一些网站</li>
+<li>基于FUSE系统
+6.1 SSHFS</li>
+</ol>
+
+
+<h2>概述</h2>
+
+<p>文件系统是一个通用操作系统重要的组成部分。传统的操作系统在内核层面上对文件系统提供支持，而通常内核态的代码难以调试，生产率较低。</p>
+
+<p>用户空间文件系统（Filesystem in Userspace)，简称FUSE，指完全在用户态实现的文件系统FUSE简化了为操作系统提供新的文件系统的工作量，
+特别适用于各种虚拟文件系统和网络文件系统。</p>
+
+<p>Linux从2.6.14版本开始通过FUSE模块支持在用户空间实现文件系统。</p>
+
+<p>本文主要介绍下fuse基础概念，以及介绍如何使用。</p>
+
+<h2>FUSE模块</h2>
+
+<p>FUSE是sourceforge 上开源项目，使用FUSE，用户不必熟悉Kernel代码，使用标准C库，FUSE库便可以设计自己需要的文件系统
+FUSE由3个部分组成，FUSE内核模块，FUSE库以及一些挂载工具</p>
+
+<p><img src="../images/fuse/fuse_1.png"></p>
+
+<p>由图中可以看出 FUSE 与Ext3等文件系统同级，挂载了FUSE文件系统，就可以正常使用文件文件系统，例如执行ls、 cp等等命令</p>
+
+<h2>安装部署</h2>
+
+<p>FUSE安装比较简单，下载源码安装三步骤：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./configure 
+</span><span class='line'>make 
+</span><span class='line'>make install </span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译完成后就生成FUSE库并把库生成在系统目录中。</p>
+
+<h2>demo</h2>
+
+<p>FUSE库提供了2种API,一套简单些，一套相对更底层API,目前我也只使用简单的API接口，
+FUSE 可以在 2.4.x 和 2.6.x 的内核上使用，现在可以支持 Java™ 绑定，不必限定于使用 C 和 C++ 来编写文件系统了。
+使用FUSE库，直接上就需要实现系统函数，例如create,open,close原本系统帮你实现的函数，需要由你重写。</p>
+
+<h3>c/c++</h3>
+
+<p>该demo主要实现了挂载FUSE文件系统以后，执行ls，显示的目录列表， 默认的挂载点是/目录， 即使挂载成功后执行ls 会显示/目录下的内容
+实现ls功能，需要实现getattr,readdir回调函数，</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//需要实现的结构体回调指针</span>
+</span><span class='line'><span class="k">static</span> <span class="k">struct</span> <span class="n">fuse_operations</span> <span class="n">xmp_oper</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">init</span>       <span class="o">=</span> <span class="n">xmp_init</span><span class="p">,</span> <span class="c1">//初始化回调函数 </span>
+</span><span class='line'>  <span class="p">.</span><span class="n">getattr</span>  <span class="o">=</span> <span class="n">xmp_getattr</span><span class="p">,</span> <span class="c1">//获取文件属性</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">readdir</span>  <span class="o">=</span> <span class="n">xmp_readdir</span><span class="p">,</span> <span class="c1">//读取目录 </span>
+</span><span class='line'>    <span class="c1">//.create     = xmp_create, //创建文件</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="o">*</span><span class="n">xmp_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">fuse_conn_info</span> <span class="o">*</span><span class="n">conn</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">BB_DATA</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="n">xmp_getattr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="k">struct</span> <span class="n">stat</span> <span class="o">*</span><span class="n">stbuf</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">res</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">res</span> <span class="o">=</span> <span class="n">lstat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">stbuf</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="n">errno</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="n">xmp_readdir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">fuse_fill_dir_t</span> <span class="n">filler</span><span class="p">,</span>
+</span><span class='line'>             <span class="n">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="k">struct</span> <span class="n">fuse_file_info</span> <span class="o">*</span><span class="n">fi</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">struct</span> <span class="n">dirent</span> <span class="o">*</span><span class="n">de</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">offset</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">fi</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">dp</span> <span class="o">=</span> <span class="n">opendir</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">dp</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="n">errno</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">while</span> <span class="p">((</span><span class="n">de</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dp</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">stat</span> <span class="n">st</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">st</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">st</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">st</span><span class="p">.</span><span class="n">st_ino</span> <span class="o">=</span> <span class="n">de</span><span class="o">-&gt;</span><span class="n">d_ino</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">=</span> <span class="n">de</span><span class="o">-&gt;</span><span class="n">d_type</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">filler</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">de</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span class='line'>          <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">closedir</span><span class="p">(</span><span class="n">dp</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">fuse_main</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">xmp_oper</span><span class="p">,</span> <span class="n">bb_data</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//编译命令</span>
+</span><span class='line'><span class="n">gcc</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">o</span> <span class="n">main</span> <span class="p">.</span><span class="o">/</span><span class="n">mmm</span><span class="p">.</span><span class="n">c</span> <span class="o">-</span><span class="n">D_FILE_OFFSET_BITS</span><span class="o">=</span><span class="mi">64</span>  <span class="err">`</span><span class="n">pkg</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">libs</span> <span class="n">fuse</span><span class="err">`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//挂载目录 </span>
+</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">main</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">mnt</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过使用mount命令可以看到挂载点信息</p>
+
+<p><img src="../images/fuse/fuse_2.png"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//ls命令 </span>
+</span><span class='line'><span class="n">ls</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">mnt</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="../images/fuse/fuse_3.png"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="c1">//卸载/tmp/mnt</span>
+</span><span class='line'><span class="n">fusemount</span> <span class="o">-</span><span class="n">u</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">mnt</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>参考资料<br/>
+5.1 需要实现的函数列表<br/>
+<a href="http://fuse.sourceforge.net/doxygen/structfuse__operations.html">http://fuse.sourceforge.net/doxygen/structfuse__operations.html</a></li>
+</ol>
+
+
+<p>5.2 一些网站<br/>
+fuse官网<br/>
+<a href="http://fuse.sourceforge.net/">http://fuse.sourceforge.net/</a></p>
+
+<p>fuse hello world  <br/>
+<a href="http://ouonline.net/create-your-own-fs-with-fuse-1">http://ouonline.net/create-your-own-fs-with-fuse-1</a></p>
+
+<p><a href="http://ouonline.net/create-your-own-fs-with-fuse-2">http://ouonline.net/create-your-own-fs-with-fuse-2</a></p>
+
+<ol>
+<li>基于FUSE系统<br/>
+6.1 SSHFS<br/>
+通过使用SSH协议，挂载远程文件系统，挂载成功后，就可以像操作本地文件一样操作远程目录。</li>
+</ol>
+
+
+<p>结束<br/>
+文本简单叙述了如何使用FUSE搭建一个文件系统，</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jmeter]]></title>
+    <link href="http://charlessoft.github.io/blog/2014/09/22/jmeter/"/>
+    <updated>2014-09-22T15:09:30+08:00</updated>
+    <id>http://charlessoft.github.io/blog/2014/09/22/jmeter</id>
+    <content type="html"><![CDATA[<h1>目录</h1>
+
+<ol>
+<li>概述</li>
+<li>jmeter 安装</li>
+<li>jmeter 使用</li>
+<li>jmeter 在持续集成中使用</li>
+<li>分布式jemter</li>
+<li>总结</li>
+<li></li>
+</ol>
+
+
+<h2>概述</h2>
+
+<p>jmeter 用来做测试, 本文介绍了jmeter用途以及jmeter使用</p>
+
+<h3>jmeter 安装步骤</h3>
+
+<p>jmeter安装步骤相对简单,</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Git远程分支]]></title>
