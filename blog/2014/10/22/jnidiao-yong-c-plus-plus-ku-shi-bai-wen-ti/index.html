@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Authorized_keys权限导致登陆失败问题 - 学海拾贝 Blog</title>
+  <title>Jni调用c++库失败问题 - 学海拾贝 Blog</title>
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="概述 authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆. 经过测试免密码登陆CentOs Linux 6.5 &hellip;">
+  <meta name="description" content="概述 jni 是Java Native Interface的缩写,Java本地调用,可以调用c/c++的动态dll,在安全项目中用到该技术,调用流程为 java调用openssl库进行加解密,在windows上运行良好,但是在linux x64上就经常出现crash现象. 问题重现 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti">
+  <link rel="canonical" href="http://charlessoft.github.io/blog/2014/10/22/jnidiao-yong-c-plus-plus-ku-shi-bai-wen-ti">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="学海拾贝 Blog" type="application/atom+xml">
@@ -61,7 +61,7 @@
   
   <header>
     
-      <h1 class="entry-title">Authorized_keys权限导致登陆失败问题</h1>
+      <h1 class="entry-title">Jni调用c++库失败问题</h1>
     
     
       <p class="meta">
@@ -77,35 +77,29 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-10-22T09:47:15+08:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h2>概述</h2>
+<div class="entry-content"><p>概述</p>
 
-<p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
+<p>jni 是Java Native Interface的缩写,Java本地调用,可以调用c/c++的动态dll,在安全项目中用到该技术,调用流程为 java调用openssl库进行加解密,在windows上运行良好,但是在linux x64上就经常出现crash现象.</p>
 
-<p>经过测试免密码登陆<code>CentOs Linux 6.5 X64位</code>系统与<code>authorized_keys</code>文件权限有关系</p>
+<p>问题重现</p>
 
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_1.png"><br/>
-有上图看出authorized_keys 权限是<code>-rw-rw-r-</code>
-即使把客户端的id_rsa.pub 保存到服务器的authorized_keys上也连接不了,需要把属性修改成<code>-rw-r--r--</code>或者<code>-rw------</code></p>
+<p>从图上看出在X509_get_pubey中发生crash导致程序退出,屏蔽掉javademo中一些代码,可以发现是在export函数中调用了c的动态链接库,在动态链接库中在调用X509_get_pubkey,最初的想法单步调试到x509_get_pubkey应该就知道什么问题了,linux下要弄这个调试,感觉比较蛋疼的事情(可能还不熟悉),不像windows那么好的图形ide,只能硬着头皮看代码了,</p>
 
-<p>修改命令:</p>
+<p>全局搜索x509_get_pubkey,
+是openssl中的获得公钥函数,找找看是什么地方调用,
+看x509_get_pubkey函数和他调用其他函数,看不出啥内容(.有问题估计也看不出.)</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 644 authorized_keys
-</span><span class='line'>或
-</span><span class='line'>chmod 600 authorized_keys</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
-这样就可以连接上</p>
+<p>换个思路,jni就是调用c的so,那我直接写个测试demo看能否正确运行,结果坑爹的我的demo可以运行,说明出错可能是在jni这层了,jni代码做的事情不多,
+大部分是调用c的动态链接库函数和保存一些句柄值,
+贴挂的地方,
+程序运行到PKI_ExportPubKey时候挂了,</p>
 </div>
 
 
@@ -128,14 +122,8 @@
   
 
 
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+<time datetime="2014-10-22T09:47:15+08:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/linux/'>Linux</a>
-  
-</span>
 
 
     </p>
@@ -149,10 +137,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/20/linux-pi-liang-zeng-jia-yong-hu/" title="Previous Post: linux 批量增加用户">&laquo; linux 批量增加用户</a>
+        <a class="basic-alignment left" href="/blog/2014/10/03/shell-code/" title="Previous Post: shell_code">&laquo; shell_code</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/06/03/jenkins-plugin-email-ext/" title="Next Post: jenkins_plugin_邮件通知">jenkins_plugin_邮件通知 &raquo;</a>
       
     </p>
   </footer>

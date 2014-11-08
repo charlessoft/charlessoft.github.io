@@ -9,37 +9,7 @@
   <meta name="author" content="charlessoft">
 
   
-  <meta name="description" content="一些shell code shell判断文件,目录是否存在或者具有权限 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-NovaPath=”/var/log/httpd/” &hellip;">
+  <meta name="description" content="概述 jni 是Java Native Interface的缩写,Java本地调用,可以调用c/c++的动态dll,在安全项目中用到该技术,调用流程为 java调用openssl库进行加解密,在windows上运行良好,但是在linux x64上就经常出现crash现象. 问题重现 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +58,57 @@ NovaPath=”/var/log/httpd/” &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/22/jnidiao-yong-c-plus-plus-ku-shi-bai-wen-ti/">Jni调用c++库失败问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-22T09:47:15+08:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>概述</p>
+
+<p>jni 是Java Native Interface的缩写,Java本地调用,可以调用c/c++的动态dll,在安全项目中用到该技术,调用流程为 java调用openssl库进行加解密,在windows上运行良好,但是在linux x64上就经常出现crash现象.</p>
+
+<p>问题重现</p>
+
+<p>从图上看出在X509_get_pubey中发生crash导致程序退出,屏蔽掉javademo中一些代码,可以发现是在export函数中调用了c的动态链接库,在动态链接库中在调用X509_get_pubkey,最初的想法单步调试到x509_get_pubkey应该就知道什么问题了,linux下要弄这个调试,感觉比较蛋疼的事情(可能还不熟悉),不像windows那么好的图形ide,只能硬着头皮看代码了,</p>
+
+<p>全局搜索x509_get_pubkey,
+是openssl中的获得公钥函数,找找看是什么地方调用,
+看x509_get_pubkey函数和他调用其他函数,看不出啥内容(.有问题估计也看不出.)</p>
+
+<p>换个思路,jni就是调用c的so,那我直接写个测试demo看能否正确运行,结果坑爹的我的demo可以运行,说明出错可能是在jni这层了,jni代码做的事情不多,
+大部分是调用c的动态链接库函数和保存一些句柄值,
+贴挂的地方,
+程序运行到PKI_ExportPubKey时候挂了,</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -746,7 +767,8 @@ git 可以在同一个目录下随时切换分支,svn(好像不行).</p>
 <code>git reset --soft commit_id</code> &mdash;>会退到指定的commit_id,只回退了commit信息,可以使用<code>git commit -m"xxx"</code>再次提交<br/>
 <code>强制提交到远程版本库</code>&ndash;>有时候需要删除远程版本库中前几次提交,可以使用命令<br/>
 <code>git reset --hard commit_id</code>然后使用<code>git push origin HEAD --force</code><br/>
-<code>git tag v0.1</code>&ndash;>打标签,push 到远程上需要用<code>git push origin tag v0.1</code></p>
+<code>git tag v0.1</code>&ndash;>打标签,push 到远程上需要用<code>git push origin tag v0.1</code>
+<code>git diff --name-status xxx yyy</code>&ndash;>对比两个日志,生成有修改的文件名</p>
 </div>
   
   
@@ -1550,63 +1572,6 @@ jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/25/ssh-authorized-keysmian-mi-ma-shi-bai-wen-ti/">Authorized_keys权限导致登陆失败问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-25T13:34:22+08:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>概述</h2>
-
-<p>authorized_keys 是将用户的公钥,保存在登陆$HOME/.ssh/authorized_keys,公钥是一段字符串,只要把它追加在authorized_keys文件的末尾就行了,下次用户可以免密码登陆.</p>
-
-<p>经过测试免密码登陆<code>CentOs Linux 6.5 X64位</code>系统与<code>authorized_keys</code>文件权限有关系</p>
-
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_1.png"><br/>
-有上图看出authorized_keys 权限是<code>-rw-rw-r-</code>
-即使把客户端的id_rsa.pub 保存到服务器的authorized_keys上也连接不了,需要把属性修改成<code>-rw-r--r--</code>或者<code>-rw------</code></p>
-
-<p>修改命令:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 644 authorized_keys
-</span><span class='line'>或
-</span><span class='line'>chmod 600 authorized_keys</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/../images/ssh_authorized/ssh_authorized_key_2.png"><br/>
-这样就可以连接上</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1633,6 +1598,10 @@ jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,�
   <ul id="最新文章">
     
       <li class="post">
+        <a href="/blog/2014/10/22/jnidiao-yong-c-plus-plus-ku-shi-bai-wen-ti/">Jni调用c++库失败问题</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/03/shell-code/">Shell_code</a>
       </li>
     
@@ -1646,10 +1615,6 @@ jenkins 默认有自带了邮件通知功能,但是使用起来不是很方便,�
     
       <li class="post">
         <a href="/blog/2014/09/23/fuse/">FUSE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/22/jmeter/">Jmeter</a>
       </li>
     
   </ul>

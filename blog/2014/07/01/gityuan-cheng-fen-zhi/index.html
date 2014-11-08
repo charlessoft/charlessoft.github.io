@@ -107,7 +107,8 @@ git 可以在同一个目录下随时切换分支,svn(好像不行).</p>
 <code>git reset --soft commit_id</code> &mdash;>会退到指定的commit_id,只回退了commit信息,可以使用<code>git commit -m"xxx"</code>再次提交<br/>
 <code>强制提交到远程版本库</code>&ndash;>有时候需要删除远程版本库中前几次提交,可以使用命令<br/>
 <code>git reset --hard commit_id</code>然后使用<code>git push origin HEAD --force</code><br/>
-<code>git tag v0.1</code>&ndash;>打标签,push 到远程上需要用<code>git push origin tag v0.1</code></p>
+<code>git tag v0.1</code>&ndash;>打标签,push 到远程上需要用<code>git push origin tag v0.1</code>
+<code>git diff --name-status xxx yyy</code>&ndash;>对比两个日志,生成有修改的文件名</p>
 </div>
 
 
@@ -203,6 +204,10 @@ var duoshuoQuery = {short_name:"charlessoft"};
   <ul id="最新文章">
     
       <li class="post">
+        <a href="/blog/2014/10/22/jnidiao-yong-c-plus-plus-ku-shi-bai-wen-ti/">Jni调用c++库失败问题</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/03/shell-code/">Shell_code</a>
       </li>
     
@@ -216,10 +221,6 @@ var duoshuoQuery = {short_name:"charlessoft"};
     
       <li class="post">
         <a href="/blog/2014/09/23/fuse/">FUSE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/22/jmeter/">Jmeter</a>
       </li>
     
   </ul>
